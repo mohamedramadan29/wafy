@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\admin\AdminController;
+use App\Http\Controllers\admin\FaqController;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\admin\UserController;
 
@@ -24,6 +25,14 @@ Route::group(['prefix' => 'admin'], function () {
         });
         Route::controller(UserController::class)->group(function () {
             Route::get('users', 'index');
+        });
+        //////////////////////////// Start Faqs /////////////////
+        ///
+        Route::controller(FaqController::class)->group(function () {
+            Route::get('faqs', 'index');
+            Route::match(['post', 'get'], 'faq/store', 'store');
+            Route::match(['post', 'get'], 'faq/update/{id}', 'update');
+            Route::post('faq/delete/{id}', 'delete');
         });
     });
 });

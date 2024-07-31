@@ -81,6 +81,17 @@
                         </li>
                     </ul>
                 </li>
+                <li class="side-item side-item-category"> الاسئلة الشائعة  </li>
+                <li class="slide">
+                    <a class="side-menu__item" data-toggle="slide" href="">
+                        <i style="font-size: 22px;margin-left: 10px" class="fa fa-users"></i>
+                        <span class="side-menu__label"> الاسئلة الشائعة  </span><i
+                            class="angle fe fe-chevron-down"></i></a>
+                    <ul class="slide-menu">
+                        <li><a class="slide-item" href="{{url('admin/faqs')}}"> الاسئلة الشائعة </a>
+                        </li>
+                    </ul>
+                </li>
                 <li class="side-item side-item-category"> الاعدادات</li>
                 <li class="slide">
                     <a class="side-menu__item" data-toggle="slide" href="">
