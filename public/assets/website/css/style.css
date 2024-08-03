@@ -1,0 +1,838 @@
+@import url('https://fonts.googleapis.com/css2?family=Zain:wght@200;300;400;700;800;900&display=swap');
+
+body {
+    font-family: "Zain", sans-serif;
+    --main-color: #3298E9;
+}
+
+.navbar {
+    padding: 0
+}
+
+.navbar-collapse {
+    flex-grow: 0
+}
+
+.navbar .main_logo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center
+}
+
+.navbar .main_logo h1 {
+    font-size: 18px;
+    color: var(--main-color);
+    margin-bottom: 25px;
+    padding-top: 10px;
+    font-weight: 600
+}
+
+.navbar .main_logo p {
+    color: var(--main-color)
+}
+
+.navbar-expand-lg .navbar-nav .nav-link {
+    color: var(--main-color);
+    font-weight: 500
+}
+
+.footer {
+    background-color: #fff;
+    text-align: center;
+    margin: 0;
+    border-top: 1px solid #e4e3e3;
+}
+
+.footer .data {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+@media (max-width: 991px) {
+    .footer .data {
+        flex-direction: column-reverse;
+    }
+}
+
+.footer .data ul {
+    padding-top: 10px;
+}
+
+.footer .data ul li {
+    display: inline-block;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    background: #fff
+}
+
+.footer .data ul li i {
+    color: #6c706f;
+    font-size: 17px
+}
+
+.footer .data p {
+    color: #a09c9c;
+    margin: 0;
+    padding: 0;
+    font-size: 12px;
+
+}
+
+.footer .data p a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+}
+
+.footer .data p a i {
+    color: #c0392b;
+}
+
+.navbar-toggler {
+    color: #4b4848;
+    font-size: 1.5rem
+}
+
+.top_header {
+    background-color: var(--main-color);
+    color: #fff;
+    z-index: 9999
+}
+
+.top_header .top1 {
+    font-size: 12px
+}
+
+.top_header .top1 .date {
+    padding-left: 5px;
+}
+
+.top_header .top1 .time {
+    padding-right: 5px
+}
+
+
+.top_header .top2 ul li {
+    display: inline-block;
+    padding-top: 4px;
+}
+
+.top_header .top2 ul li a {
+    color: #fff
+}
+
+.top_header .top2 ul li i {
+    font-size: 12px;
+}
+
+.top_header .row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between
+}
+
+@media (max-width: 991px) {
+    .top_header .row {
+        justify-content: center
+    }
+
+    .top_header {
+        height: 80px
+    }
+}
+
+header {
+    padding: 15px;
+    border-bottom: 1px solid #e6e6e6;
+}
+
+@media (min-width: 992px) {
+    .navbar-expand-lg .navbar-collapse {
+        margin-right: 15%
+    }
+}
+
+@media (max-width: 991px) {
+    .top_header .top2 .button_login {
+        padding: 5px
+    }
+
+    .navigation .navbar-nav {
+        text-align: right;
+        box-shadow: 0 0 10px 2px #fff;
+        background: #f9f9f9
+    }
+}
+
+.nav-item:hover .nav-link {
+    color: var(--main-color) !important
+}
+
+.small_screen .top_header {
+    position: relative
+}
+
+@media (max-width: 991px) {
+    .small_screen .top_header {
+        height: auto
+    }
+}
+
+.small_screen .medieum {
+    background-color: #fff
+}
+
+@media (max-width: 991px) {
+    .small_screen .medieum .row {
+        display: flex;
+        justify-content: center;
+        align-items: center
+    }
+}
+
+.small_screen .medieum .navbar-brand {
+    padding: 0;
+    margin: 0
+}
+
+.small_screen .medieum .navbar-brand img {
+    margin-left: 10px
+}
+
+.small_screen .medieum .button_login {
+    background-color: var(--main-color);
+    color: #fff;
+    margin-left: 10px;
+    margin-right: 10px
+}
+
+.small_screen .top_header .top2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+}
+
+.new_links {
+    z-index: 9999999999;
+    height: 100vh;
+    background: #ffff;
+    position: absolute;
+    top: -60px;
+    right: -100%;
+    width: 300px;
+}
+
+.new_links ul li {
+    display: block;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.105);
+}
+
+
+.new_links ul {
+    padding: 0;
+    margin-top: 10px;
+    margin-bottom: 10px
+}
+
+.small_screen {
+    display: none
+}
+
+/***************************************/
+
+body.overlay-active {
+    overflow: hidden;
+    /* يمنع التمرير عندما تكون القائمة نشطة */
+}
+
+.new_links {
+    /* ابدأ القائمة خارج الشاشة */
+    transition: right 0.3s ease-in-out;
+}
+
+.new_links.active {
+    right: 0;
+    /* حرك القائمة إلى داخل الشاشة */
+}
+
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9999999998;
+}
+
+.overlay.active {
+    display: block;
+}
+
+/****************************************/
+
+@media (max-width: 991px) {
+    .large_screen {
+        display: none
+    }
+
+    .small_screen {
+        display: block
+    }
+}
+
+.small_screen .medieum {
+    background-color: #fff;
+    border-bottom: 1px solid rgba(129, 129, 129, 0.2);
+}
+
+@media (max-width: 991px) {
+    .small_screen .medieum .row {
+        display: flex;
+        justify-content: center;
+        align-items: center
+    }
+}
+
+.small_screen .medieum .navbar-brand {
+    padding: 0;
+    margin: 0
+}
+
+.small_screen .medieum .button_login {
+    background-color: var(--main-color);
+    color: #fff;
+    margin-left: 3px;
+    margin-right: 3px
+}
+
+.login_navbar li {
+    margin-right: 10px;
+    margin-left: 10px
+}
+
+.navigation .navbar-nav {
+    text-align: center
+}
+
+.large_screen .navigation .navbar-nav {
+    display: -webkit-inline-box
+}
+
+.login-button {
+    border: 2px solid #dedede;
+    margin-right: 8px;
+    padding: 6px 20px !important
+}
+
+@media (max-width: 400px) {
+    .login-button {
+        display: inline-block;
+        padding: 6px 45px !important;
+        margin: 5px 0
+    }
+}
+
+@media (max-width: 480px) {
+    .login-button {
+        display: inline-block;
+        padding: 6px 45px !important;
+        margin: 5px 0
+    }
+}
+
+@media (max-width: 768px) {
+    .login-button {
+        display: inline-block;
+        padding: 6px 45px !important;
+        margin: 5px 0
+    }
+}
+
+@media (max-width: 992px) {
+    .login-button {
+        display: inline-block;
+        padding: 6px 45px !important;
+        margin: 5px 0
+    }
+}
+
+.add-button {
+    background: var(--main-color);
+    color: #fff;
+    padding: 8px 20px !important;
+    display: inline-block
+}
+
+.add-button:hover {
+    color: #fff
+}
+
+.main-nav .nav-item .nav-link {
+    font-size: 20px;
+    line-height: 25px;
+    padding: 0 10px
+}
+
+.main-nav .nav-item .nav-link span {
+    margin-left: 4px
+}
+
+.main-nav .nav-item .nav-link.dropdown-toggle {
+    padding-right: 10px
+}
+
+
+.main-nav .nav-item.active .nav-link {
+    color: var(--main-color) !important;
+}
+
+.navbar-light .navbar-nav .nav-link.active, .navbar-light .navbar-nav .show > .nav-link {
+    color: var(--main-color);
+}
+
+.nav-item a.active {
+    color: var(--main-color) !important;
+}
+
+.main-nav .search .nav-link i {
+    font-size: 15px;
+    height: 43px;
+    width: 43px;
+    line-height: 43px;
+    color: var(--main-color);
+    border: 1px solid var(--main-color);
+    border-radius: 3px;
+    text-align: center
+}
+
+.main-nav .search .input-group {
+    width: 300px;
+    direction: rtl
+}
+
+.main-nav .search .input-group .input-group-addon {
+    background: var(--main-color);
+    color: #fff;
+    border: 1px solid var(--main-color)
+}
+
+.main-nav .search .input-group .input-group-addon i {
+    font-size: 15px;
+    padding-right: 5px;
+    padding-left: 5px
+}
+
+@media (max-width: 480px) {
+    .navbar-toggleable-md > .container {
+        margin-right: 0;
+        margin-left: 0;
+        padding-left: 25px;
+        padding-right: 25px
+    }
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color: #3c3c3c;
+}
+
+@media (min-width: 992px) {
+    .navbar-expand-lg .navbar-collapse {
+        margin-right: 30%
+    }
+}
+
+@media (max-width: 991px) {
+    .top_header .top2 .button_login {
+        padding: 5px
+    }
+
+    .navigation .navbar-nav {
+        text-align: right;
+        box-shadow: 0 0 10px 2px #fff;
+        background: #f9f9f9
+    }
+}
+
+.nav-item a {
+    position: relative;
+    text-decoration: none;
+    color: inherit;
+    /* للحفاظ على لون النص الأصلي */
+
+}
+
+
+.nav-item a.active {
+    color: var(--main-color) !important;
+}
+
+
+.nav-item a {
+    position: relative;
+    text-decoration: none;
+    color: inherit;
+    /* للحفاظ على لون النص الأصلي */
+}
+
+.small_screen .medieum .navbar-brand {
+    padding: 0;
+    margin: 0
+}
+
+.nav-link {
+    color: #000;
+    font-size: 14px;
+}
+
+[dir='rtl'] .slick-next,
+[dir='rtl'] .slick-prev {
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    line-height: 40px
+}
+
+@media (max-width: 991px) {
+    [dir='rtl'] .slick-next {
+        left: 0;
+        display: none !important
+    }
+
+    [dir='rtl'] .slick-prev {
+        right: 0;
+        display: none !important
+    }
+
+    .about_section .main_slide {
+        overflow: hidden
+    }
+
+    .nav-item a::after {
+        display: none;
+    }
+
+    .nav-link {
+        font-size: 13px;
+    }
+}
+
+.whatsapp_bottom {
+    position: fixed;
+    bottom: 20px;
+    right: 15px;
+
+}
+
+@media (max-width: 991px) {
+    .whatsapp_bottom {
+        bottom: 20px;
+        right: 10px;
+        padding: 7px;
+        border-radius: 64px;
+        width: 130px
+    }
+}
+
+.whatsapp_bottom a {
+    text-decoration: none;
+    color: #fff
+}
+
+
+/****************** Start Hero Section ****************/
+.hero {
+    background-position: center;
+    background-size: cover;
+    padding: 30px;
+    text-align: center;
+    min-height: 500px;
+    display: flex;
+    align-content: center;
+    align-items: center;
+}
+
+.hero h3 {
+    line-height: 1.5;
+    font-size: 50px;
+    font-weight: bold;
+    margin-bottom: 40px;
+
+}
+
+.hero .user_type {
+    display: flex;
+    justify-content: center;
+    background: #fff;
+    width: 30%;
+    text-align: center;
+    margin: auto;
+    align-items: center;
+}
+
+.hero .user_type .active {
+
+}
+
+.hero .user_type .seller {
+    padding: 20px;
+    width: 50%;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.hero .user_type .buyer {
+    padding: 20px;
+    width: 50%;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+.hero .user_type .active {
+    background-color: var(--main-color);
+    color: #fff;
+    transition: all .3s linear;
+}
+
+/**************** End Hero Section ************/
+
+/************* start Seller Buyer Section *********/
+
+.about_seller_buyer {
+    padding-top: 40px;
+    display: none;
+}
+
+.about_seller_buyer.active {
+    display: block;
+}
+
+.about_seller_buyer .data {
+}
+
+.about_seller_buyer .data .info {
+}
+
+.about_seller_buyer .data .info h4 {
+    margin-top: 20px;
+    font-size: 35px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.about_seller_buyer .data .info p {
+    font-size: 20px;
+    color: #5e5555;
+}
+
+.global_button {
+    padding: 13px 65px;
+    font-size: 20px;
+}
+
+.about_seller_buyer .data .info .global_button i {
+    position: relative;
+    top: 4px;
+    margin-right: 5px;
+
+}
+
+.about_seller_buyer .image {
+}
+
+.about_seller_buyer .image img {
+    max-width: 100%
+}
+
+/************** End Seller Buyer Section **********/
+
+
+/**************** Start Login Page *************/
+
+.register_page {
+
+}
+
+.register_page .data {
+}
+
+.register_page .login {
+    display: none;
+}
+
+.register_page .active {
+    display: block;
+}
+
+.register_page .data form {
+    margin-top: 40px;
+}
+
+  form h4 {
+    font-weight: bold;
+    font-size: 30px;
+    margin-bottom: 30px;
+}
+
+  form .box {
+    margin-bottom: 25px;
+}
+
+  .box label {
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+ form .box input {
+    box-shadow: none !important;
+    outline: none;
+    height: 45px;
+    font-size: 18px;
+
+}
+
+ form .box .star {
+    color: red;
+}
+
+  form .box button {
+}
+
+.register_page .data .info {
+}
+
+.register_page .data .info img {
+    max-width: 100%
+}
+
+
+.account_type {
+    display: flex;
+    justify-content: center;
+    background: #fff;
+    width: 70%;
+    text-align: center;
+    align-items: center;
+    margin-top: 30px;
+}
+
+.account_type .active {
+
+}
+
+.account_type .seller {
+    padding: 10px;
+    width: 40%;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.account_type .buyer {
+    padding: 10px;
+    width: 40%;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.account_type .active {
+    background-color: var(--main-color);
+    color: #fff;
+    transition: all .3s linear;
+}
+
+/***************** End Login Page ************  */
+
+
+/*********** Start Main Dahsboard *************/
+
+.main_dashboard {
+    background-color: #f7f7f7;
+    padding-top: 60px;
+    padding-bottom: 40px;
+}
+
+.main_dashboard .data {
+
+}
+
+.main_dashboard .data .main_dashboard_sidebar {
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.main_dashboard .data .main_dashboard_sidebar .user_data {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.main_dashboard .data .main_dashboard_sidebar .user_data .image {
+}
+
+.main_dashboard .data .main_dashboard_sidebar .user_data .image img {
+    width: 60px;
+    height: 60px;
+    border-radius: 100%;
+    margin-left: 15px;
+    border: 1px solid #f9f5f5;
+    padding: 3px;
+
+}
+
+.main_dashboard .data .main_dashboard_sidebar .user_data .info {
+}
+
+.main_dashboard .data .main_dashboard_sidebar .user_data .info p {
+    font-weight: bold;
+    margin-bottom: 2px;
+
+}
+
+.main_dashboard .data .main_dashboard_sidebar .user_data .info span {
+}
+
+.main_dashboard .data .main_dashboard_sidebar .start_order .global_button {
+    width: 100%;
+    padding: 10px 65px;
+}
+
+/*************** Start Last Order ****************/
+.last_order {
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.last_order .head_section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.last_order .head_section h4 {
+    color: #5e5e5e;
+    font-size: 23px;
+}
+
+.last_order .head_section a i {
+    position: relative;
+    top: 3px;
+}
+
+/************ End Last Order **************/
+/*************** End Main Dashboard ***********/
+
+
+
+
+
+
