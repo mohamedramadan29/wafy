@@ -696,7 +696,14 @@ body.overlay-active {
     outline: none;
     height: 45px;
     font-size: 18px;
-
+}
+form .box input [type='email']{
+    text-align: right;
+    direction: rtl;
+}
+form .box textarea{
+    box-shadow: none !important;
+    outline: none;
 }
 
  form .box .star {
@@ -775,10 +782,10 @@ body.overlay-active {
     justify-content: flex-start;
 }
 
-.main_dashboard .data .main_dashboard_sidebar .user_data .image {
+ .user_data .image {
 }
 
-.main_dashboard .data .main_dashboard_sidebar .user_data .image img {
+ .user_data .image img {
     width: 60px;
     height: 60px;
     border-radius: 100%;
@@ -788,16 +795,16 @@ body.overlay-active {
 
 }
 
-.main_dashboard .data .main_dashboard_sidebar .user_data .info {
+ .user_data .info {
 }
 
-.main_dashboard .data .main_dashboard_sidebar .user_data .info p {
+ .user_data .info p {
     font-weight: bold;
     margin-bottom: 2px;
 
 }
 
-.main_dashboard .data .main_dashboard_sidebar .user_data .info span {
+ .user_data .info span {
 }
 
 .main_dashboard .data .main_dashboard_sidebar .start_order .global_button {
@@ -808,7 +815,7 @@ body.overlay-active {
 /*************** Start Last Order ****************/
 .last_order {
     background-color: #fff;
-    padding: 10px;
+    padding: 20px;
     border-radius: 10px;
 }
 
@@ -819,20 +826,96 @@ body.overlay-active {
 }
 
 .last_order .head_section h4 {
-    color: #5e5e5e;
+    color: #145c96;
     font-size: 23px;
+    font-weight: bold;
+    margin-bottom: 25px;
 }
-
+.last_order .step h5{
+    font-weight:bold;
+}
 .last_order .head_section a i {
     position: relative;
     top: 3px;
 }
 
 /************ End Last Order **************/
+/***************  Start All  Transaction *********/
+
+.all_transations{
+
+}
+.all_transations .transaction{
+    display: flex;
+    justify-content: flex-start;
+    padding-bottom: 15px;
+    padding-top:15px;
+    border-bottom: 1px solid #ededed;
+}
+.all_transations .transaction .car_image {
+    margin-left: 15px;
+}
+.all_transations .transaction .car_image img{
+    width: 110px;
+    height: 110px;
+    border-radius: 10px;
+}
+.all_transations .transaction .transaction_info {
+    width: 70%;
+}
+.all_transations .transaction .transaction_info .transaction_status{
+    display: flex;
+    justify-content: flex-start;
+}
+.all_transations .transaction .transaction_info .transaction_status div{
+    margin-right:10px;
+    margin-left: 10px;
+}
+.all_transations .transaction .transaction_info h4{
+    margin-top: 10px;
+    margin-bottom: 5px;
+    font-size: 20px;
+}
+.all_transations .transaction .transaction_info .price{
+    margin-bottom: 5px;
+}
+.all_transations .transaction .transaction_info .date{ margin-bottom: 5px;}
+.all_transations .transaction .transaction_info .description{
+    color:#5a5a5a;
+}
+.all_transations .transaction .other_person{
+    width:35%;
+}
+
+
+.all_transations .other_person h5{
+    font-size: 18px;
+    font-weight: bold;
+}
+.all_transations .other_person .user_data{
+    display: flex;
+
+}
+form .car_images{
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+form .car_images img{
+    width:100px;
+    height:100px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+/*************** End All Transaction **********/
+
+
+
+
+
+
+
+
 /*************** End Main Dashboard ***********/
-
-
-
-
 
 

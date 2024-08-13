@@ -43,7 +43,20 @@ return [
             'visibility' => 'public',
             'throw' => false,
         ],
-
+        'car_images' => [
+            'driver' => 'local',
+            'root' => base_path('assets/uploads/car_images'), // Use base_path() directly with the path
+            'url' => env('APP_URL').'/storage',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
+        'user_images' => [
+            'driver' => 'local',
+            'root' => base_path('assets/uploads/user_images'),
+            'url' => env('APP_URL').'/storage',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     use HasFactory;
+
+    protected $guarded = [];
+
+    public function question()
+    {
+        return $this->hasOne(OrderQuestion::class, 'order_id');
+    }
 }

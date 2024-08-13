@@ -1,6 +1,6 @@
 @extends('front.layouts.master')
 @section('title')
-   حسابي  - المعاملات الاخيرة
+    حسابي - جميع المعاملات
 @endsection
 @section('content')
     <div class="page_content">
@@ -21,8 +21,6 @@
                                     <div class="info">
                                         <p> مرحبا ، {{ auth()->user()->name }} </p>
                                         <span>  <i class="bi bi-phone"></i>  {{auth()->user()->phone}} </span>
-                                        <br>
-                                        <a href="{{url('user/logout')}}"> تسجيل خروج  </a>
                                     </div>
                                 </div>
                                 <br>
@@ -33,20 +31,33 @@
                                     <a href="{{url('user/profile')}}" class="btn btn-success global_button"> بيانات حسابي  <i class="bi bi-pencil-square"></i>  </a>
                                     <br>
                                     <br>
-                                    <a href="{{url('user/profile')}}" class="btn btn-danger global_button">  تعديل رمز الحماية   <i class="bi bi-lock"></i> </a>
+                                    <a href="{{url('user/change-password')}}" class="btn btn-danger global_button">  تعديل رمز الحماية   <i class="bi bi-lock"></i> </a>
                                 </div>
                             </div>
                         </div>
+
                         <div class="col-lg-8">
                             <div class="last_order">
-                              <div class="head_section">
-                                  <div>
-                                  <h4> المعاملات الاخيرة </h4>
-                                  </div>
-                                  <div><a href="{{url('user/transactions')}}" class="btn btn-primary"> جميع المعاملات <i class="bi bi-arrow-left"></i>  </a> </div>
+                                @if (Session::has('Success_message'))
+                                    <div class="alert alert-success"> {{Session::get('Success_message')}} </div>
+                                    @php
+                                        //emotify('success', \Illuminate\Support\Facades\Session::get('Success_message'));
 
-
-                              </div>
+                                    @endphp
+                                @endif
+                                @if ($errors->any())
+                                    @foreach ($errors->all() as $error)
+                                        <div class="alert alert-danger"> {{$error}} </div>
+                                        @php
+                                            //  emotify('error', $error);
+                                        @endphp
+                                    @endforeach
+                                @endif
+                                <div class="head_section">
+                                    <div>
+                                        <h4> جميع المعاملات </h4>
+                                    </div>
+                                </div>
                                 <div class="all_transations">
                                     @if(count($transactions)> 0)
 
@@ -111,7 +122,8 @@
                                                         }
                                                     </script>
 
-                                                    @if($transaction['seller_id'] == Auth::id())
+
+                                                @if($transaction['seller_id'] == Auth::id())
                                                         <div class="actions">
                                                             <a href="{{url('transaction/'.$transaction['seller_id'].'-'.$transaction['slug'])}}"
                                                                class="btn btn-warning btn-sm"> مشاهدة المعاملة  <i class="bi bi-eye"></i> </a>

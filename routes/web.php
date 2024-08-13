@@ -3,23 +3,30 @@
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\front\UserController;
 use \App\Http\Controllers\front\OrdersController;
+
 Route::get('/', function () {
     return view('front.index');
 });
 
 
-Route::controller(UserController::class)->group(function (){
-    Route::match(['post','get'],'register','register');
-    Route::post('login','login');
+Route::controller(UserController::class)->group(function () {
+    Route::match(['post', 'get'], 'register', 'register');
+    Route::post('login', 'login');
     Route::group(['middleware' => 'auth'], function () {
-
-        Route::get('user/dashboard','dashboard');
+        Route::get('user/dashboard', 'dashboard');
+        Route::match(['post', 'get'], 'user/profile', 'account');
+        Route::match(['post', 'get'], 'user/change-password', 'change_password');
+        Route::get('user/logout', 'logout');
     });
 
 });
-Route::controller(OrdersController::class)->group(function (){
+Route::controller(OrdersController::class)->group(function () {
     Route::group(['middleware' => 'auth'], function () {
-        Route::match(['post', 'get'], 'user/start_order', 'start_order');
+        Route::match(['post', 'get'], 'user/add-transaction', 'start_order');
+        Route::get('user/transactions', 'index');
+        Route::match(['post', 'get'], 'user/transaction/edit/{seller_id}-{transaction_slug}', 'update');
+        Route::get('user/transaction/delete/{id}', 'delete');
     });
+    Route::get('transaction/{seller_id}-{slug}', 'show');
 });
 include 'admin.php';

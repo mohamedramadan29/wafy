@@ -65,13 +65,43 @@
                                     </div>
                                     <div class="box">
                                         <label for="password"> رمز الحماية <span class="star"> * </span> </label>
-                                        <input type="password" class="form-control" name="password" id="password">
+                                        <div id="code-input">
+                                            <input type="text" maxlength="1" class="code-digit form-control" name="password[]" id="password1" autofocus>
+                                            <input type="text" maxlength="1" class="code-digit form-control" name="password[]" id="password2">
+                                            <input type="text" maxlength="1" class="code-digit form-control" name="password[]" id="password3">
+                                            <input type="text" maxlength="1" class="code-digit form-control" name="password[]" id="password4">
+                                            <input type="text" maxlength="1" class="code-digit form-control" name="password[]" id="password5">
+                                            <input type="text" maxlength="1" class="code-digit form-control" name="password[]" id="password6">
+                                        </div>
                                     </div>
                                     <div class="box">
                                         <button type="submit" class=" btn btn-primary global_button"> تسجيل دخول
                                         </button>
                                     </div>
                                 </form>
+
+                                <script>
+                                    const inputs = document.querySelectorAll('.code-digit');
+
+                                    // التنقل للأمام عند إدخال رقم
+                                    inputs.forEach((input, index) => {
+                                        input.addEventListener('input', () => {
+                                            if (input.value.length === 1 && index < inputs.length - 1) {
+                                                inputs[index + 1].focus();
+                                            }
+                                        });
+                                    });
+
+                                    // التنقل للخلف عند الضغط على Backspace
+                                    inputs.forEach((input, index) => {
+                                        input.addEventListener('keydown', (event) => {
+                                            if (event.key === 'Backspace' && input.value.length === 0 && index > 0) {
+                                                inputs[index - 1].focus();
+                                            }
+                                        });
+                                    });
+
+                                </script>
                             </div>
 
                             <div class="login" id="register">
@@ -85,9 +115,20 @@
                                         <label for="phone"> رقم الهاتف <span class="star"> * </span> </label>
                                         <input type="text" class="form-control" name="phone" id="phone">
                                     </div>
+{{--                                    <div class="box">--}}
+{{--                                        <label for="password"> رمز الحماية <span class="star"> * </span> </label>--}}
+{{--                                        <input type="password" class="form-control" name="password" id="password">--}}
+{{--                                    </div>--}}
                                     <div class="box">
                                         <label for="password"> رمز الحماية <span class="star"> * </span> </label>
-                                        <input type="password" class="form-control" name="password" id="password">
+                                        <div id="code-input2">
+                                            <input type="text" maxlength="1" class="code-digit2 form-control" name="password[]" id="password1" autofocus>
+                                            <input type="text" maxlength="1" class="code-digit2 form-control" name="password[]" id="password2">
+                                            <input type="text" maxlength="1" class="code-digit2 form-control" name="password[]" id="password3">
+                                            <input type="text" maxlength="1" class="code-digit2 form-control" name="password[]" id="password4">
+                                            <input type="text" maxlength="1" class="code-digit2 form-control" name="password[]" id="password5">
+                                            <input type="text" maxlength="1" class="code-digit2 form-control" name="password[]" id="password6">
+                                        </div>
                                     </div>
                                     <div class="box">
                                         <button type="submit" class=" btn btn-primary global_button"> حساب جديد
@@ -95,6 +136,49 @@
                                     </div>
                                 </form>
                             </div>
+
+                            <style>
+                                #code-input,
+                                #code-input2{
+                                    display: flex;
+                                    justify-content: space-between;
+                                    max-width: 50%;
+                                    direction: ltr; /* يجعل اتجاه الإدخال من اليسار إلى اليمين */
+                                }
+                                .code-digit2,
+                                .code-digit{
+                                    width: 50px;
+                                    height: 50px !important;
+                                    text-align: center;
+                                    margin-right: 5px;
+                                    font-size: 20px;
+                                    direction: ltr; /* يضمن أن الإدخال يبدأ من اليسار */
+
+                                }
+                            </style>
+
+                            <script>
+                                const inputs2 = document.querySelectorAll('.code-digit2');
+
+                                // التنقل للأمام عند إدخال رقم
+                                inputs2.forEach((input, index) => {
+                                    input.addEventListener('input', () => {
+                                        if (input.value.length === 1 && index < inputs2.length - 1) {
+                                            inputs2[index + 1].focus();
+                                        }
+                                    });
+                                });
+
+                                // التنقل للخلف عند الضغط على Backspace
+                                inputs2.forEach((input, index) => {
+                                    input.addEventListener('keydown', (event) => {
+                                        if (event.key === 'Backspace' && input.value.length === 0 && index > 0) {
+                                            inputs2[index - 1].focus();
+                                        }
+                                    });
+                                });
+
+                            </script>
 
                         </div>
                         <div class="col-lg-6 col-12">
