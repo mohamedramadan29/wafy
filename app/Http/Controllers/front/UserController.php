@@ -9,6 +9,7 @@ use App\Models\front\Order;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
@@ -140,16 +141,114 @@ class UserController extends Controller
         return view('front.users.profile.index', compact('user'));
     }
 
-
-    public function change_password()
+    public function change_password(Request $request)
     {
+        if ($request->isMethod('post')) {
+            $data = $request->all();
+            $password = implode('', $data['password']);
+            $new_password = implode('', $data['new_password']);
+
+            // Check if the current password matches
+            if (Hash::check($password, Auth::user()->password)) {
+                // Update the user's password
+                $user = Auth::user();
+                $user->password = Hash::make($new_password);
+                $user->save();
+                return $this->success_message(' تم تغيير رمز الحماية بنجاح ');
+            } else {
+                return redirect()->back()->withErrors('رمز الحماية الحالي غير صحيح');
+            }
+        }
         return view('front.users.profile.change-password');
     }
+
+
+    public function forget_password(Request $request)
+    {
+        if ($request->isMethod('post')) {
+            $data = $request->all();
+            $phone = $data['phone'];
+            $count_user = User::where('phone', $phone)->count();
+
+            if ($count_user > 0) {
+                $user = User::where('phone', $phone)->first();
+                $user->update([
+                    'code' => rand(1000, 9999),
+                    'timeout_code' => now()->addMinutes(10),
+                ]);
+
+                // إرسال كود التحقق إلى واتساب العميل هنا
+
+                return view('front.forget-password')->with([
+                    'phone' => $phone,
+                    'step' => 2
+                ]);
+            } else {
+                return redirect()->back()->withErrors('لا يوجد حساب بهذا الرقم!!!');
+            }
+        }
+
+        return view('front.forget-password');
+    }
+
+    public function forget_password_step2(Request $request)
+    {
+        if ($request->isMethod('post')) {
+            $data = $request->all();
+            $phone = $data['phone'];
+            $user = User::where('phone', $phone)->first();
+
+            $confirm_code = implode('', $data['confirm_code']);
+            if ($user && $user->code == $confirm_code) {
+                if (now()->lessThan($user->timeout_code)) {
+                    return view('front.forget-password')->with([
+                        'phone' => $phone,
+                        'step' => 3,
+                    ]);
+                } else {
+                    return redirect()->back()->withErrors('كود التحقق منتهي الصلاحية!');
+                }
+            } else {
+                return redirect()->back()->withErrors('كود التحقق غير صحيح!');
+            }
+        }
+
+        return view('front.forget-password');
+    }
+
+    public function reset_password(Request $request)
+    {
+        if ($request->isMethod('post')) {
+            $data = $request->all();
+            $phone = $data['phone'];
+            $user = User::where('phone', $phone)->first();
+            $new_password = implode('',$data['new_password']);
+            $confirm_password = implode('',$data['confirm_password']);
+            if ($new_password != $confirm_password){
+                return redirect()->back()->withErrors(' يجب تاكيد رمز الحماية بشكل صحيح  ');
+            }
+            if ($user) {
+                $user->update([
+                    'password' => Hash::make($new_password),
+                    'code' => null,  // مسح الكود بعد الاستخدام
+                    'timeout_code' => null, // مسح الـ timeout بعد الاستخدام
+                ]);
+
+                return redirect()->route('register')->with('Success_message', 'تم تغيير كلمة المرور بنجاح!');
+            } else {
+                return redirect()->back()->withErrors('حدث خطأ، الرجاء المحاولة مرة أخرى.');
+            }
+        }
+        return view('front.forget-password');
+    }
+
+
     public function dashboard()
     {
         $transactions = Order::where('seller_id', Auth::id())->orwhere('buyer_id', Auth::id())->orderby('id', 'DESC')->limit(5)->get();
         return view('front.users.dashboard', compact('transactions'));
     }
+
 
     public function logout()
     {

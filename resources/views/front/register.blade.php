@@ -64,14 +64,14 @@
                                         <input type="text" class="form-control" name="phone" id="phone">
                                     </div>
                                     <div class="box">
-                                        <label for="password"> رمز الحماية <span class="star"> * </span> </label>
+                                        <label for="password"> رمز الحماية <span class="star"> * </span> <a href="{{url('forget-password')}}"> نسيت رمز الحماية ؟ </a> </label>
                                         <div id="code-input">
-                                            <input type="text" maxlength="1" class="code-digit form-control" name="password[]" id="password1" autofocus>
-                                            <input type="text" maxlength="1" class="code-digit form-control" name="password[]" id="password2">
-                                            <input type="text" maxlength="1" class="code-digit form-control" name="password[]" id="password3">
-                                            <input type="text" maxlength="1" class="code-digit form-control" name="password[]" id="password4">
-                                            <input type="text" maxlength="1" class="code-digit form-control" name="password[]" id="password5">
-                                            <input type="text" maxlength="1" class="code-digit form-control" name="password[]" id="password6">
+                                            <input type="password" maxlength="1" class="code-digit form-control" name="password[]" id="password1" autofocus>
+                                            <input type="password" maxlength="1" class="code-digit form-control" name="password[]" id="password2">
+                                            <input type="password" maxlength="1" class="code-digit form-control" name="password[]" id="password3">
+                                            <input type="password" maxlength="1" class="code-digit form-control" name="password[]" id="password4">
+                                            <input type="password" maxlength="1" class="code-digit form-control" name="password[]" id="password5">
+                                            <input type="password" maxlength="1" class="code-digit form-control" name="password[]" id="password6">
                                         </div>
                                     </div>
                                     <div class="box">
@@ -122,12 +122,12 @@
                                     <div class="box">
                                         <label for="password"> رمز الحماية <span class="star"> * </span> </label>
                                         <div id="code-input2">
-                                            <input type="text" maxlength="1" class="code-digit2 form-control" name="password[]" id="password1" autofocus>
-                                            <input type="text" maxlength="1" class="code-digit2 form-control" name="password[]" id="password2">
-                                            <input type="text" maxlength="1" class="code-digit2 form-control" name="password[]" id="password3">
-                                            <input type="text" maxlength="1" class="code-digit2 form-control" name="password[]" id="password4">
-                                            <input type="text" maxlength="1" class="code-digit2 form-control" name="password[]" id="password5">
-                                            <input type="text" maxlength="1" class="code-digit2 form-control" name="password[]" id="password6">
+                                            <input type="password" maxlength="1" class="code-digit2 form-control" name="password[]" id="password1" autofocus>
+                                            <input type="password" maxlength="1" class="code-digit2 form-control" name="password[]" id="password2">
+                                            <input type="password" maxlength="1" class="code-digit2 form-control" name="password[]" id="password3">
+                                            <input type="password" maxlength="1" class="code-digit2 form-control" name="password[]" id="password4">
+                                            <input type="password" maxlength="1" class="code-digit2 form-control" name="password[]" id="password5">
+                                            <input type="password" maxlength="1" class="code-digit2 form-control" name="password[]" id="password6">
                                         </div>
                                     </div>
                                     <div class="box">

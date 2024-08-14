@@ -25,6 +25,9 @@
                                 </div>
                                 <br>
                                 <div class="start_order">
+                                    <a href="{{url('user/transactions')}}" class="btn btn-warning global_button">  جميع المعاملات  <i class="bi bi-arrow-left"></i>  </a>
+                                    <br>
+                                    <br>
                                     <a href="{{url('user/add-transaction')}}" class="btn btn-primary global_button"> بدء معاملة جديد <i class="bi bi-plus-circle"></i>  </a>
                                     <br>
                                     <br>

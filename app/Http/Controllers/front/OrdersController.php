@@ -23,7 +23,7 @@ class OrdersController extends Controller
 
     public function index()
     {
-        $transactions = Order::where('seller_id', Auth::id())->orwhere('buyer_id', Auth::id())->orderby('id','DESC')->get();
+        $transactions = Order::where('seller_id', Auth::id())->orwhere('buyer_id', Auth::id())->orderby('id', 'DESC')->get();
         return view('front.users.transactions', compact('transactions'));
     }
 
@@ -176,7 +176,7 @@ class OrdersController extends Controller
                 return Redirect::back()->withInput()->withErrors($validator);
             }
 
-            $CountOldSlug = Order::where('slug', $this->CustomeSlug($data['title']))->where('id','!=',$transaction_question['id'])->count();
+            $CountOldSlug = Order::where('slug', $this->CustomeSlug($data['title']))->where('id', '!=', $transaction_question['id'])->count();
             if ($CountOldSlug > 0) {
                 return Redirect::back()->withInput()->withErrors(' اسم المعاملة متواجد من قبل من فضلك عدل الاسم الحالي  ');
             }
@@ -219,17 +219,32 @@ class OrdersController extends Controller
         return view('front.users.edit-transaction', compact('transaction'));
     }
 
-    public function show($seller_id,$slug)
+    public function show($seller_id, $slug)
     {
         $transaction_count = Order::with('question')->where('seller_id', $seller_id)->where('slug', $slug)->count();
         if ($transaction_count > 0) {
-            $transaction = Order::with('question')->where('seller_id', Auth::id())->where('slug', $slug)->first();
+            $transaction = Order::with('question')->where('seller_id', $seller_id)->where('slug', $slug)->first();
             $transaction_question = OrderQuestion::findOrFail($transaction['id']);
         } else {
             abort('404');
         }
-        return view('front.show-transaction',compact('transaction'));
+        return view('front.show-transaction', compact('transaction'));
     }
+
+    public function buyer_start_transaction($seller_id, $slug)
+    {
+        $transaction_count = Order::with('question')->where('seller_id', $seller_id)->where('slug', $slug)->count();
+        if ($transaction_count > 0) {
+            $transaction = Order::with('question')->where('seller_id', $seller_id)->where('slug', $slug)->first();
+            $transaction->update([
+                'buyer_id' => Auth::id()
+            ]);
+            return $this->success_message(' تم بدء المعاملة بنجاح  ');
+        } else {
+            abort('404');
+        }
+    }
+
     public function delete($id)
     {
         $transaction = Order::findOrFail($id);

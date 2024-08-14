@@ -25,6 +25,9 @@
                                 </div>
                                 <br>
                                 <div class="start_order">
+                                    <a href="{{url('user/transactions')}}" class="btn btn-warning global_button">  جميع المعاملات  <i class="bi bi-arrow-left"></i>  </a>
+                                    <br>
+                                    <br>
                                     <a href="{{url('user/add-transaction')}}" class="btn btn-primary global_button"> بدء معاملة جديد <i class="bi bi-plus-circle"></i>  </a>
                                     <br>
                                     <br>
@@ -137,7 +140,7 @@
                                                         </div>
                                                     @else
                                                         <div class="actions">
-                                                            <a href="#" class="btn btn-warning btn-sm"> تفاصيل اضافية <i
+                                                            <a href="{{url('transaction/'.$transaction['seller_id'].'-'.$transaction['slug'])}}" class="btn btn-warning btn-sm"> كامل التفاصيل   <i
                                                                     class="bi bi-eye"></i> </a>
 
                                                         </div>
