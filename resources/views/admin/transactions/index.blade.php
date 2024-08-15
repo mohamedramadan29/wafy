@@ -1,6 +1,6 @@
 @extends('admin.layouts.master')
 @section('title')
-  اقسام الخدمات الرئيسية
+   العمليات علي الموقع
 @endsection
 @section('css')
     <link href="{{ URL::asset('assets/admin/plugins/datatable/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet"/>
@@ -16,7 +16,7 @@
         <div class="my-auto">
             <div class="d-flex">
                 <h4 class="content-title mb-0 my-auto">الرئيسية </h4><span
-                        class="text-muted mt-1 tx-13 mr-2 mb-0">/   اقسام الخدمات الرئيسية   </span>
+                    class="text-muted mt-1 tx-13 mr-2 mb-0">/العمليات علي الموقع  </span>
             </div>
         </div>
     </div>
@@ -27,12 +27,13 @@
         <!-- Col -->
         <div class="col-lg-12">
             <div class="card">
+
+
                 <div class="card-body">
                     @if(Session::has('Success_message'))
                         <div
-                                class="alert alert-success"> {{Session::get('Success_message')}} </div>
+                            class="alert alert-success"> {{Session::get('Success_message')}} </div>
                     @endif
-
                     @if ($errors->any())
                         <div class="alert alert-danger">
                             <ul>
@@ -42,25 +43,17 @@
                             </ul>
                         </div>
                     @endif
-                    <div class="mb-4 main-content-label">   اقسام الخدمات الرئيسية   </div>
-                        <div class="card-header">
-                            <button data-target="#add_model"
-                                    data-toggle="modal" class="btn btn-primary btn-sm">   اضافة قسم جديد  <i
-                                        class="fa fa-plus"></i>
-                            </button>
-                        </div>
-                        <!-- Add New Section -->
-                        @include('admin.categories.add')
                     <div class="card-body">
-
                         <div class="table-responsive">
                             <table class="table text-md-nowrap" id="example2">
                                 <thead>
                                 <tr>
                                     <th class="wd-15p border-bottom-0"> #</th>
-                                    <th class="wd-15p border-bottom-0"> الاسم  </th>
-                                    <th class="wd-15p border-bottom-0">   صورة القسم  </th>
-                                    <th class="wd-15p border-bottom-0">   حالة القسم  </th>
+                                    <th class="wd-15p border-bottom-0"> عنوان العملية </th>
+                                    <th class="wd-15p border-bottom-0">  البائع   </th>
+                                    <th class="wd-15p border-bottom-0">   المشتري  </th>
+                                    <th class="wd-15p border-bottom-0">   السعر  </th>
+                                    <th class="wd-15p border-bottom-0">    الحالة   </th>
                                     <th class="wd-15p border-bottom-0"> العمليات</th>
                                 </tr>
                                 </thead>
@@ -68,32 +61,31 @@
                                 @php
                                     $i = 1;
                                 @endphp
-                                @foreach($categories as $category)
+                                @foreach($transactions  as $transaction)
                                     <tr>
                                         <td> {{$i++}} </td>
-                                        <td> {{$category['name']}} </td>
-                                        <td><img width="60px" height="60px" src="{{asset('assets/uploads/service_category/'.$category['image'])}}" alt=""> </td>
-                                        <td> @if($category['status'] == 1)
-                                                 <span class="badge badge-success"> فعال </span>
-                                            @else
-                                                 <span class="badge badge-danger"> غير فعال  </span>
-                                        @endif </td>
-
+                                        <td> {{$transaction['title']}} </td>
+                                        <td> {{$transaction['seller']['name']}} </td>
                                         <td>
-                                            <button class="btn btn-primary btn-sm"
-                                                    data-target="#edit_model_{{$category['id']}}"
-                                                    data-toggle="modal"> تعديل <i class="fa fa-edit"></i></button>
-                                            <button data-target="#delete_model_{{$category['id']}}"
-                                                    data-toggle="modal" class="btn btn-danger btn-sm"> حذف <i
-                                                        class="fa fa-trash"></i>
-                                            </button>
+                                            @if($transaction['buyer_id'] !=null)
+                                                {{$transaction['buyer']['name']}}
+                                            @else
+                                              <span class="badge badge-danger">   لا يوجد </span>
+                                            @endif
+                                            </td>
+                                        <td>  {{ number_format($transaction['price'],2)}} ريال  </td>
+                                        <td>
+                                            <span class="badge badge-warning"> {{$transaction['status']}} </span>
+                                        </td>
+                                        <td>
+                                            <a href="{{url('admin/transaction/show/'.$transaction['id'])}}" class="btn btn-primary btn-sm"> <i class="fa fa-edit"></i> مشاهدة جميع المعلومات  </a>
+                                            <a href="{{url('admin/transaction/steps/'.$transaction['id'])}}" class="btn btn-warning btn-sm"> <i class="fa fa-eye"></i> مشاهدة خطوات العملية  </a>
+{{--                                            <button data-target="#delete_model_{{$center['id']}}"--}}
+{{--                                                    data-toggle="modal" class="btn btn-danger btn-sm">  <i--}}
+{{--                                                    class="fa fa-trash"></i>--}}
+{{--                                            </button>--}}
                                         </td>
                                     </tr>
-                                    <!-- Edit Sections -->
-                                    @include('admin.categories.edit')
-
-                                    <!-- Delete Section Model  -->
-                                    @include('admin.categories.delete')
                                 @endforeach
                                 </tbody>
                             </table>
@@ -120,15 +112,9 @@
     <script src="{{ URL::asset('assets/admin/plugins/datatable/js/jquery.dataTables.js') }}"></script>
     <script src="{{ URL::asset('assets/admin/plugins/datatable/js/dataTables.bootstrap4.js') }}"></script>
     <script src="{{ URL::asset('assets/admin/plugins/datatable/js/dataTables.buttons.min.js') }}"></script>
-    <script src="{{ URL::asset('assets/admin/plugins/datatable/js/buttons.bootstrap4.min.js') }}"></script>
-    <script src="{{ URL::asset('assets/admin/plugins/datatable/js/jszip.min.js') }}"></script>
-    <script src="{{ URL::asset('assets/admin/plugins/datatable/js/pdfmake.min.js') }}"></script>
-    <script src="{{ URL::asset('assets/admin/plugins/datatable/js/vfs_fonts.js') }}"></script>
-    <script src="{{ URL::asset('assets/admin/plugins/datatable/js/buttons.html5.min.js') }}"></script>
-    <script src="{{ URL::asset('assets/admin/plugins/datatable/js/buttons.print.min.js') }}"></script>
-    <script src="{{ URL::asset('assets/admin/plugins/datatable/js/buttons.colVis.min.js') }}"></script>
     <script src="{{ URL::asset('assets/admin/plugins/datatable/js/dataTables.responsive.min.js') }}"></script>
     <script src="{{ URL::asset('assets/admin/plugins/datatable/js/responsive.bootstrap4.min.js') }}"></script>
     <!--Internal  Datatable js -->
     <script src="{{ URL::asset('assets/admin/js/table-data.js') }}"></script>
+    <script src="{{URL::asset('assets/admin/js/modal.js')}}"></script>
 @endsection

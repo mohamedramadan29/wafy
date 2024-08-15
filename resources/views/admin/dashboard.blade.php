@@ -25,18 +25,18 @@
     <!-- row -->
     <div class="row row-sm">
         <!--======================================================== Admin Dashboard ==================================================-->
-        @if(\Illuminate\Support\Facades\Auth::user()->account_type == 'admin')
+        @if(\Illuminate\Support\Facades\Auth::user()->user_type == 'admin')
             <div class="col-xl-3 col-lg-6 col-md-6 col-xm-12">
                 <div class="card overflow-hidden sales-card bg-primary-gradient">
                     <div class="pl-3 pt-3 pr-3 pb-2 pt-0">
                         <div class="">
-                            <h6 class="mb-3 tx-12 text-white"> الاقسام الرئيسية  </h6>
+                            <h6 class="mb-3 tx-12 text-white">  العمليات علي الموقع   </h6>
                         </div>
                         <div class="pb-0 mt-0">
                             <div class="d-flex">
                                 <div class="">
-                                    <h4 class="tx-20 font-weight-bold mb-1 text-white"> @php //echo count(\App\Models\Order::all()) @endphp  </h4>
-                                    <a href="{{url('admin.php/orders')}}" class="mb-0 tx-12 text-white op-7"> مشاهدة التفاصيل  </a>
+                                    <h4 class="tx-20 font-weight-bold mb-1 text-white"> @php echo count(\App\Models\front\Order::all()) @endphp  </h4>
+                                    <a href="{{url('admin/transactions')}}" class="mb-0 tx-12 text-white op-7"> مشاهدة التفاصيل  </a>
                                 </div>
                             </div>
                         </div>
@@ -47,13 +47,13 @@
                 <div class="card overflow-hidden sales-card bg-danger-gradient">
                     <div class="pl-3 pt-3 pr-3 pb-2 pt-0">
                         <div class="">
-                            <h6 class="mb-3 tx-12 text-white"> الخدمات  </h6>
+                            <h6 class="mb-3 tx-12 text-white"> مراكز الصيانة   </h6>
                         </div>
                         <div class="pb-0 mt-0">
                             <div class="d-flex">
                                 <div class="">
-                                    <h4 class="tx-20 font-weight-bold mb-1 text-white"> @php //echo count(\App\Models\Order::where('status','في انتظار الموافقة')->get()) @endphp </h4>
-                                    <a href="{{url('admin.php/orders/pending')}}" class="mb-0 tx-12 text-white op-7"> مشاهدة التفاصيل  </a>
+                                    <h4 class="tx-20 font-weight-bold mb-1 text-white"> @php echo count(\App\Models\admin\InsepctionCenter::all()) @endphp </h4>
+                                    <a href="{{url('admin/inspection-center')}}" class="mb-0 tx-12 text-white op-7"> مشاهدة التفاصيل  </a>
                                 </div>
                             </div>
                         </div>
@@ -69,25 +69,8 @@
                         <div class="pb-0 mt-0">
                             <div class="d-flex">
                                 <div class="">
-                                    <h4 class="tx-20 font-weight-bold mb-1 text-white"> @php //echo count(\App\Models\User::where('type','driver')->get()) @endphp </h4>
-                                    <a href="{{url('admin.php/drivers')}}" class="mb-0 tx-12 text-white op-7"> مشاهدة التفاصيل  </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-3 col-lg-6 col-md-6 col-xm-12">
-                <div class="card overflow-hidden sales-card bg-warning-gradient">
-                    <div class="pl-3 pt-3 pr-3 pb-2 pt-0">
-                        <div class="">
-                            <h6 class="mb-3 tx-12 text-white">  الصفقات  </h6>
-                        </div>
-                        <div class="pb-0 mt-0">
-                            <div class="d-flex">
-                                <div class="">
-                                    <h4 class="tx-20 font-weight-bold mb-1 text-white"> @php //echo count(\App\Models\User::where('type','supervisor')->get()) @endphp </h4>
-                                    <a href="{{url('admin.php/supervisors')}}" class="mb-0 tx-12 text-white op-7"> مشاهدة التفاصيل  </a>
+                                    <h4 class="tx-20 font-weight-bold mb-1 text-white"> @php echo count(\App\Models\User::all()) @endphp </h4>
+                                    <a href="{{url('admin/users')}}" class="mb-0 tx-12 text-white op-7"> مشاهدة التفاصيل  </a>
                                 </div>
                             </div>
                         </div>
