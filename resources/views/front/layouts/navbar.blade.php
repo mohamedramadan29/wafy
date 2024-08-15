@@ -51,6 +51,19 @@
                                                             </span>
                                                             </a>
                                                         </li>
+                                                        <hr>
+                                                    @elseif($notification['type'] == 'App\Notifications\SelectCenter')
+                                                        <li><a class="dropdown-item"
+                                                               href="{{ url('user/transactions') }}">
+                                                                {{ $notification['data']['title'] }}
+                                                                : {{ $notification['data']['transaction_title'] }}
+                                                                <br>
+                                                                <span class="timer"> <i class="fa fa-clock"></i>
+                                                                {{ $notification->created_at->diffForHumans() }}
+                                                            </span>
+                                                            </a>
+                                                        </li>
+                                                        <hr>
                                                     @endif
                                                 @empty
                                                     <li><a class="dropdown-item"> لا يوجد لديك اشعارات في الوقت

@@ -6,9 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Http\Traits\Message_Trait;
 use App\Http\Traits\Slug_Trait;
 use App\Http\Traits\Upload_Images;
+use App\Models\admin\InsepctionCenter;
+use App\Models\admin\InspectionType;
 use App\Models\front\Order;
 use App\Models\front\OrderQuestion;
+use App\Models\front\TransactionStep;
 use App\Notifications\NewBuyer;
+use App\Notifications\SelectCenter;
 use http\Client\Curl\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +23,6 @@ use Illuminate\Support\Facades\Validator;
 
 class OrdersController extends Controller
 {
-
     use Message_Trait;
     use Slug_Trait;
     use Upload_Images;
@@ -27,14 +30,40 @@ class OrdersController extends Controller
     public function index()
     {
         $transactions = Order::where('seller_id', Auth::id())->orwhere('buyer_id', Auth::id())->orderby('id', 'DESC')->get();
-        return view('front.users.transactions', compact('transactions'));
+        $centers = InsepctionCenter::where('status', 1)->get();
+
+        $types = InspectionType::where('status', 1)->get();
+        /////////// Make Notifiction Is Read
+        ///
+        if (auth()->check()) {
+            $user = \App\Models\User::find(Auth::id());
+
+            foreach ($user->unreadNotifications as $notification) {
+                if ($notification['type'] == 'App\Notifications\SelectCenter') {
+                    $notification->markAsRead();
+                }
+            }
+        }
+
+        return view('front.users.transactions', compact('transactions', 'centers', 'types'));
+    }
+
+    public function getInspectionTypes($centerId)
+    {
+        $types = InspectionType::where('center_id', $centerId)->where('status', 1)->get();
+        return response()->json(['types' => $types]);
+    }
+
+    public function getInspectionPrice($typeId)
+    {
+        $type = InspectionType::find($typeId);
+        return response()->json(['price' => $type->price]);
     }
 
     public function start_order(Request $request)
     {
 
         if ($request->isMethod('post')) {
-
             $data = $request->all();
             //dd($data);
             $rules = [
@@ -100,7 +129,6 @@ class OrdersController extends Controller
             $new_order->images = $lastfileimages;
             $new_order->link = url('transaction/' . Auth::id() . '-' . $this->CustomeSlug($data['title']));
             $new_order->save();
-
             //////// Insert Car Details Questions
             ///
             $order_question = new OrderQuestion();
@@ -119,7 +147,21 @@ class OrdersController extends Controller
             $order_question->car_any_damage = $data['car_any_damage'];
             $order_question->tire_condition = $data['tire_condition'];
             $order_question->save();
+
+            ////////////// Add Order Steps
+            ///
+            $transaction_step = new TransactionStep();
+            $transaction_step->transaction_id = $new_order->id;
+            $transaction_step->transaction_title = $data['title'];
+            $transaction_step->transaction_slug = $this->CustomeSlug($data['title']);
+            $transaction_step->user_id = Auth::id();
+            $transaction_step->user_name = Auth::user()->name;
+            $transaction_step->title = '  بداية انشاء العملية من المستخدم   ';
+            $transaction_step->save();
+
             DB::commit();
+
+
             return $this->success_message(' تم اضافة المعاملة بنجاح  ');
         }
         return view('front.users.start_order');
@@ -231,16 +273,18 @@ class OrdersController extends Controller
         } else {
             abort('404');
         }
-
         /////////// Make Notifiction Is Read
         ///
-        $user = \App\Models\User::find(Auth::id());
+        if (auth()->check()) {
+            $user = \App\Models\User::find(Auth::id());
 
-        foreach ($user->unreadNotifications as $notification) {
-            if ($notification['type'] == 'App\Notifications\NewBuyer') {
-                $notification->markAsRead();
+            foreach ($user->unreadNotifications as $notification) {
+                if ($notification['type'] == 'App\Notifications\NewBuyer') {
+                    $notification->markAsRead();
+                }
             }
         }
+
         return view('front.show-transaction', compact('transaction'));
     }
 
@@ -252,15 +296,101 @@ class OrdersController extends Controller
             $seller = \App\Models\User::where('id', $seller_id)->first();
             $seller_name = $seller['name'];
             $transaction->update([
-                'buyer_id' => Auth::id()
+                'buyer_id' => Auth::id(),
+                'status' => ' بداية عملية الشراء '
             ]);
             ///////////////// Send Notification To Seller IN DB
             Notification::send($seller, new NewBuyer($seller_id, $seller_name, Auth::id(), Auth::user()->name, $transaction['id'], $transaction['title'], $transaction['slug']));
             ////////////// Send Notification To Whatsapp To Buyer
+            //
+
+            //////// Add Step To Db
+            ///
+            $transaction_step = new TransactionStep();
+            $transaction_step->transaction_id = $transaction['id'];
+            $transaction_step->transaction_title = $transaction['title'];
+            $transaction_step->transaction_slug = $transaction['slug'];
+            $transaction_step->user_id = Auth::id();
+            $transaction_step->user_name = Auth::user()->name;
+            $transaction_step->title = '  بدء عملية الشراء من جانب المستخدم  ';
+            $transaction_step->save();
+
             return $this->success_message(' تم بدء المعاملة بنجاح  ');
         } else {
             abort('404');
         }
+    }
+
+
+    /////////// User Select Center
+    ///
+    public function select_center(Request $request, $transaction_id)
+    {
+        $transaction = Order::findOrFail($transaction_id);
+        if ($request->isMethod('post')) {
+            $data = $request->all();
+
+            $rules = [
+                'center' => 'required',
+                'inspection_type' => 'required',
+                'price' => 'required'
+            ];
+            $messages = [
+                'center.required' => '  ',
+                'inspection_type.required' => ' من فضلك حدد نوع الصيانة  ',
+                'price.required' => ' من فضلك ادخل السعر  ',
+            ];
+            $validator = Validator::make($data, $rules, $messages);
+            if ($validator->fails()) {
+                return Redirect::back()->withInput()->withErrors($validator);
+            }
+
+            $transaction->update([
+                'inspection_center' => $data['center'],
+                'inspection_type' => $data['inspection_type'],
+                'inspection_price' => $data['price'],
+                'status' => 'تم تحديد مركز الصيانة ونوع الفحص',
+            ]);
+
+            ///////// start Create Invoice
+            ///
+            ///
+
+            ////////// Send Notification To seller
+            ///
+
+            $seller_id = $transaction['seller_id'];
+            $seller = \App\Models\User::where('id', $seller_id)->first();
+            $seller_name = $seller['name'];
+            Notification::send($seller, new SelectCenter($seller_id, $seller_name, Auth::id(), Auth::user()->name, $transaction['id'], $transaction['title'], $transaction['slug']));
+            //////////
+            /// Send Notification To Whatsapp
+            ///
+
+            ////// Add Transaction Steps
+            ///
+            $transaction_step = new TransactionStep();
+            $transaction_step->transaction_id = $transaction_id;
+            $transaction_step->transaction_title = $transaction['title'];
+            $transaction_step->transaction_slug = $transaction['slug'];
+            $transaction_step->user_id = Auth::id();
+            $transaction_step->user_name = Auth::user()->name;
+            $transaction_step->title = ' تم تحديد مركز الصيانة والنوع والسعر  ';
+            $transaction_step->save();
+        }
+    }
+
+    ////////////// Start show Transaction Invoice
+    ///
+    public function transaction_invoice($seller_id, $slug)
+    {
+        $transaction_count = Order::with('question')->where('seller_id', $seller_id)->where('slug', $slug)->count();
+        if ($transaction_count > 0) {
+            $transaction = Order::with('center', 'inspectiontype')->where('seller_id', $seller_id)->where('slug', $slug)->first();
+        } else {
+            abort('404');
+        }
+        return view('front.users.transaction_invoice', compact('transaction'));
     }
 
     public function delete($id)

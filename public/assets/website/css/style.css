@@ -578,6 +578,10 @@ body.overlay-active {
     overflow: scroll;
 }
 
+.navbar-nav .dropdown-menu a{
+    text-wrap: wrap;
+}
+
 
 
 

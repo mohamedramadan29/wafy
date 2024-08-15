@@ -22,6 +22,9 @@ return new class extends Migration
             $table->text('images');
             $table->string('link');
             $table->integer('status')->default('0');
+            $table->integer('inspection_center')->nullable();
+            $table->integer('inspection_type')->nullable();
+            $table->string('inspection_price')->nullable();
             $table->timestamps();
         });
     }
