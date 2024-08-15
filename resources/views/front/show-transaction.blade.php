@@ -14,33 +14,41 @@
                                     <div class="user_data">
                                         <div class="image">
                                             @if(auth()->user()->image !='')
-                                                <img src="{{asset('assets/uploads/user_images/'.auth()->user()->image)}}" alt="">
+                                                <img
+                                                    src="{{asset('assets/uploads/user_images/'.auth()->user()->image)}}"
+                                                    alt="">
                                             @else
-                                                <img src="{{asset('assets/uploads/user_images/user_avatar.png')}}" alt="">
+                                                <img src="{{asset('assets/uploads/user_images/user_avatar.png')}}"
+                                                     alt="">
                                             @endif
                                         </div>
                                         <div class="info">
                                             <p> مرحبا ، {{ auth()->user()->name }} </p>
                                             <span>  <i class="bi bi-phone"></i>  {{auth()->user()->phone}} </span>
                                             <br>
-                                            <a href="{{url('user/logout')}}"> تسجيل خروج  </a>
+                                            <a href="{{url('user/logout')}}"> تسجيل خروج </a>
                                         </div>
                                     </div>
                                     <br>
                                     <div class="start_order">
-                                        <a href="{{url('user/add-transaction')}}" class="btn btn-warning global_button">  جميع المعاملات  <i class="bi bi-arrow-left"></i>  </a>
+                                        <a href="{{url('user/transactions')}}" class="btn btn-warning global_button">
+                                            جميع المعاملات <i class="bi bi-arrow-left"></i> </a>
                                         <br>
                                         <br>
-                                        <a href="{{url('user/add-transaction')}}" class="btn btn-primary global_button"> بدء معاملة جديد <i class="bi bi-plus-circle"></i>  </a>
+                                        <a href="{{url('user/add-transaction')}}" class="btn btn-primary global_button">
+                                            بدء معاملة جديد <i class="bi bi-plus-circle"></i> </a>
                                         <br>
                                         <br>
-                                        <a href="{{url('user/profile')}}" class="btn btn-success global_button"> بيانات حسابي  <i class="bi bi-pencil-square"></i>  </a>
+                                        <a href="{{url('user/profile')}}" class="btn btn-success global_button"> بيانات
+                                            حسابي <i class="bi bi-pencil-square"></i> </a>
                                         <br>
                                         <br>
-                                        <a href="{{url('user/change-password')}}" class="btn btn-danger global_button">  تعديل رمز الحماية   <i class="bi bi-lock"></i> </a>
+                                        <a href="{{url('user/change-password')}}" class="btn btn-danger global_button">
+                                            تعديل رمز الحماية <i class="bi bi-lock"></i> </a>
                                     </div>
                                 @else
-                                    <a href="{{url('register')}}" class="btn btn-primary btn-lg">    سجل دخولك الان لبداية معاملة جديدة<i class="bi bi-arrow-left"></i>  </a>
+                                    <a href="{{url('register')}}" class="btn btn-primary btn-lg"> سجل دخولك الان لبداية
+                                        معاملة جديدة<i class="bi bi-arrow-left"></i> </a>
                                 @endif
 
                             </div>
@@ -83,7 +91,8 @@
                                                         <label for="title"> عنوان المعاملة <span
                                                                 class="star"> *  </span>
                                                         </label>
-                                                        <input readonly disabled type="text" name="title" id="title" class="form-control"
+                                                        <input readonly disabled type="text" name="title" id="title"
+                                                               class="form-control"
                                                                value="{{$transaction['title']}}">
                                                     </div>
                                                 </div>
@@ -101,7 +110,8 @@
                                                 <div class="box">
                                                     <label for="description"> الوصف <span class="star"> *  </span>
                                                     </label>
-                                                    <textarea readonly disabled rows="8" name="description" id="description"
+                                                    <textarea readonly disabled rows="8" name="description"
+                                                              id="description"
                                                               class="form-control">{{$transaction['description']}}</textarea>
                                                 </div>
                                             </div>
@@ -135,7 +145,8 @@
                                                     <div class="box">
                                                         <label for="car_mark"> الماركة <span class="star"> *  </span>
                                                         </label>
-                                                        <input readonly disabled type="text" name="car_mark" id="car_mark"
+                                                        <input readonly disabled type="text" name="car_mark"
+                                                               id="car_mark"
                                                                class="form-control"
                                                                value="{{$transaction['question']['car_mark']}}">
                                                     </div>
@@ -144,7 +155,8 @@
                                                     <div class="box">
                                                         <label for="car_model"> الموديل <span class="star"> *  </span>
                                                         </label>
-                                                        <input readonly disabled type="text" name="car_model" id="car_model"
+                                                        <input readonly disabled type="text" name="car_model"
+                                                               id="car_model"
                                                                class="form-control"
                                                                value="{{$transaction['question']['car_model']}}">
                                                     </div>
@@ -156,7 +168,8 @@
                                                     <div class="box">
                                                         <label for="car_mark"> سنة الصنع <span class="star"> *  </span>
                                                         </label>
-                                                        <input readonly disabled type="number" name="car_year" id="car_year"
+                                                        <input readonly disabled type="number" name="car_year"
+                                                               id="car_year"
                                                                class="form-control"
                                                                value="{{$transaction['question']['car_year']}}">
                                                     </div>
@@ -190,7 +203,8 @@
                                                         <label for="door_number"> عدد الابواب <span
                                                                 class="star"> *  </span>
                                                         </label>
-                                                        <input readonly disabled type="number" name="door_number" id="door_number"
+                                                        <input readonly disabled type="number" name="door_number"
+                                                               id="door_number"
                                                                class="form-control"
                                                                value="{{$transaction['question']['door_number']}}">
                                                     </div>
@@ -200,7 +214,8 @@
                                                         <label for="car_color"> لون السيارة <span
                                                                 class="star"> *  </span>
                                                         </label>
-                                                        <input readonly disabled type="text" name="car_color" id="car_color"
+                                                        <input readonly disabled type="text" name="car_color"
+                                                               id="car_color"
                                                                class="form-control"
                                                                value="{{$transaction['question']['car_color']}}">
                                                     </div>
@@ -214,7 +229,8 @@
                                                                 class="badge badge-danger bg-danger"> الكيلومترات  </span>
                                                             <span class="star"> *  </span>
                                                         </label>
-                                                        <input readonly disabled type="number" name="car_distance" id="car_distance"
+                                                        <input readonly disabled type="number" name="car_distance"
+                                                               id="car_distance"
                                                                class="form-control"
                                                                value="{{$transaction['question']['car_distance']}}">
                                                     </div>
@@ -224,7 +240,8 @@
                                                         <label for="solar_type"> نوع الوقود <span
                                                                 class="star"> *  </span>
                                                         </label>
-                                                        <input readonly disabled type="text" name="solar_type" id="solar_type"
+                                                        <input readonly disabled type="text" name="solar_type"
+                                                               id="solar_type"
                                                                class="form-control"
                                                                value="{{$transaction['question']['solar_type']}}">
                                                     </div>
@@ -238,7 +255,8 @@
                                                         <label for="engine_capacity"> سعة المحرك <span
                                                                 class="star"> *  </span>
                                                         </label>
-                                                        <input readonly disabled type="text" name="engine_capacity" id="engine_capacity"
+                                                        <input readonly disabled type="text" name="engine_capacity"
+                                                               id="engine_capacity"
                                                                class="form-control"
                                                                value="{{$transaction['question']['engine_capacity']}}">
                                                     </div>
@@ -248,7 +266,8 @@
                                                         <label for="car_transmission"> ناقل الحركة <span
                                                                 class="star"> *  </span>
                                                         </label>
-                                                        <input readonly disabled type="text" name="car_transmission" id="car_transmission"
+                                                        <input readonly disabled type="text" name="car_transmission"
+                                                               id="car_transmission"
                                                                class="form-control"
                                                                value="{{$transaction['question']['car_transmission']}}">
                                                     </div>
@@ -262,7 +281,8 @@
                                                         <label for="car_accedant"> الحوادث ان وجدت <span
                                                                 class="star"> *  </span>
                                                         </label>
-                                                        <input readonly disabled type="text" name="car_accedant" id="car_accedant"
+                                                        <input readonly disabled type="text" name="car_accedant"
+                                                               id="car_accedant"
                                                                class="form-control"
                                                                value="{{$transaction['question']['car_accedant']}}">
                                                     </div>
@@ -272,7 +292,8 @@
                                                         <label for="car_any_damage"> وجود أي أضرار أو خدوش <span
                                                                 class="star"> *  </span>
                                                         </label>
-                                                        <input readonly disabled type="text" name="car_any_damage" id="car_any_damage"
+                                                        <input readonly disabled type="text" name="car_any_damage"
+                                                               id="car_any_damage"
                                                                class="form-control"
                                                                value="{{$transaction['question']['car_any_damage']}}">
                                                     </div>
@@ -285,7 +306,8 @@
                                                         <label for="tire_condition"> حالة الإطارات <span
                                                                 class="star"> *  </span>
                                                         </label>
-                                                        <input readonly disabled type="text" name="tire_condition" id="tire_condition"
+                                                        <input readonly disabled type="text" name="tire_condition"
+                                                               id="tire_condition"
                                                                class="form-control"
                                                                value="{{$transaction['question']['tire_condition']}}">
                                                     </div>
@@ -293,8 +315,12 @@
                                             </div>
                                             @if(auth()->user())
                                                 @if(auth()->user()->id != $transaction['seller_id'])
-                                                    <button type="submit" class="btn btn-primary"> بداية معاملة  شراء <i
-                                                            class="bi bi-floppy-fill"></i></button>
+                                                    @if($transaction['buyer_id'] == null)
+                                                        <button type="submit" class="btn btn-primary"> بداية معاملة شراء
+                                                            <i
+                                                                class="bi bi-floppy-fill"></i></button>
+                                                    @endif
+
                                                 @endif
                                             @else
                                                 <a href="{{url('register')}}" class="btn btn-primary"> سجل دخولك الان

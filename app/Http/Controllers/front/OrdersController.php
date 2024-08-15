@@ -8,9 +8,12 @@ use App\Http\Traits\Slug_Trait;
 use App\Http\Traits\Upload_Images;
 use App\Models\front\Order;
 use App\Models\front\OrderQuestion;
+use App\Notifications\NewBuyer;
+use http\Client\Curl\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 
@@ -228,6 +231,16 @@ class OrdersController extends Controller
         } else {
             abort('404');
         }
+
+        /////////// Make Notifiction Is Read
+        ///
+        $user = \App\Models\User::find(Auth::id());
+
+        foreach ($user->unreadNotifications as $notification) {
+            if ($notification['type'] == 'App\Notifications\NewBuyer') {
+                $notification->markAsRead();
+            }
+        }
         return view('front.show-transaction', compact('transaction'));
     }
 
@@ -236,9 +249,14 @@ class OrdersController extends Controller
         $transaction_count = Order::with('question')->where('seller_id', $seller_id)->where('slug', $slug)->count();
         if ($transaction_count > 0) {
             $transaction = Order::with('question')->where('seller_id', $seller_id)->where('slug', $slug)->first();
+            $seller = \App\Models\User::where('id', $seller_id)->first();
+            $seller_name = $seller['name'];
             $transaction->update([
                 'buyer_id' => Auth::id()
             ]);
+            ///////////////// Send Notification To Seller IN DB
+            Notification::send($seller, new NewBuyer($seller_id, $seller_name, Auth::id(), Auth::user()->name, $transaction['id'], $transaction['title'], $transaction['slug']));
+            ////////////// Send Notification To Whatsapp To Buyer
             return $this->success_message(' تم بدء المعاملة بنجاح  ');
         } else {
             abort('404');

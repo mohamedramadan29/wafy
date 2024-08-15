@@ -61,7 +61,7 @@
                                     @csrf
                                     <div class="box">
                                         <label for="phone"> رقم الهاتف <span class="star"> * </span> </label>
-                                        <input type="text" class="form-control" name="phone" id="phone">
+                                        <input type="text" class="form-control" value="{{old('phone')}}" name="phone" id="phone">
                                     </div>
                                     <div class="box">
                                         <label for="password"> رمز الحماية <span class="star"> * </span> <a href="{{url('forget-password')}}"> نسيت رمز الحماية ؟ </a> </label>

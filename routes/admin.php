@@ -4,7 +4,8 @@ use App\Http\Controllers\admin\AdminController;
 use App\Http\Controllers\admin\FaqController;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\admin\UserController;
-
+use \App\Http\Controllers\admin\InspectionCenterController;
+use \App\Http\Controllers\admin\InspectionTypeController;
 Route::get('/admin', [AdminController::class, 'index'])->name('login');
 Route::group(['prefix' => 'admin'], function () {
     Route::post('admin_login', [AdminController::class, 'admin_login']);
@@ -33,6 +34,25 @@ Route::group(['prefix' => 'admin'], function () {
             Route::match(['post', 'get'], 'faq/store', 'store');
             Route::match(['post', 'get'], 'faq/update/{id}', 'update');
             Route::post('faq/delete/{id}', 'delete');
+        });
+        ////////////////////////// start Inspection Center ////////////
+        ///
+
+        Route::controller(InspectionCenterController::class)->group(function (){
+
+            Route::get('inspection-center','index');
+            Route::match(['post','get'],'inspection-center/store','store');
+            Route::match(['post','get'],'inspection-center/update/{id}','update');
+            Route::post('inspection-center/delete/{id}','delete');
+        });
+
+        //////////////////// Start Inspection Type
+        ///
+        Route::controller(InspectionTypeController::class)->group(function (){
+            Route::get('inspection-type/{centerid}','index');
+            Route::match(['post','get'],'inspection-type/store','store');
+            Route::match(['post','get'],'inspection-type/update/{id}','update');
+            Route::post('inspection-type/delete/{id}','delete');
         });
     });
 });

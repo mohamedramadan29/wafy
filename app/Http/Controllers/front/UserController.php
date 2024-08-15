@@ -245,7 +245,7 @@ class UserController extends Controller
 
     public function dashboard()
     {
-        $transactions = Order::where('seller_id', Auth::id())->orwhere('buyer_id', Auth::id())->orderby('id', 'DESC')->limit(5)->get();
+        $transactions = Order::with('seller','buyer')->where('seller_id', Auth::id())->orwhere('buyer_id', Auth::id())->orderby('id', 'DESC')->limit(5)->get();
         return view('front.users.dashboard', compact('transactions'));
     }
 

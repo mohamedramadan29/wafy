@@ -8,27 +8,68 @@
                         <a class="navbar-brand" href="{{url('/')}}">
                             <img width="70px" src="{{asset('assets/website/uploads/logo.webp')}}" alt="">
                         </a>
-                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <button class="navbar-toggler" type="button" data-toggle="collapse"
+                                data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                                aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
                         </button>
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul class="navbar-nav ml-auto main-nav ">
                                 <li class="nav-item">
-                                    <a class="nav-link" id='index_link' aria-current="page" href="{{url('/')}}"> الرئيسية </a>
+                                    <a class="nav-link" id='index_link' aria-current="page" href="{{url('/')}}">
+                                        الرئيسية </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#">   الاسئلة الشائعة </a>
+                                    <a class="nav-link" href="#"> الاسئلة الشائعة </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="western_link" href="#">  تواصل معنا  </a>
+                                    <a class="nav-link" id="western_link" href="#"> تواصل معنا </a>
                                 </li>
                                 @if(auth()->check())
                                     <li class="nav-item">
-                                        <a class="nav-link" id="western_link" href="{{url('user/dashboard')}}"> حسابي  </a>
+                                        <div class="dropdown">
+                                            @php
+                                                $unreadNotificationsUsers = \Illuminate\Support\Facades\Auth::user()->unreadNotifications;
+                                            @endphp
+                                            @if ($unreadNotificationsUsers->count() > 0)
+                                                <span class="counter"> {{ $unreadNotificationsUsers->count() }} </span>
+                                            @endif
+                                            <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                               aria-expanded="false">
+                                                <i class="bi bi-bell-fill"></i>
+                                            </a>
+                                            <ul class="dropdown-menu">
+                                                @forelse ($unreadNotificationsUsers as $notification)
+                                                    @if ($notification['type'] == 'App\Notifications\NewBuyer')
+                                                        <li><a class="dropdown-item"
+                                                               href="{{ url('transaction/' . $notification['data']['seller_id'] . '-' . $notification['data']['transaction_slug']) }}">
+                                                                {{ $notification['data']['title'] }}
+                                                                : {{ $notification['data']['transaction_title'] }}
+                                                                <br>
+                                                                <span class="timer"> <i class="fa fa-clock"></i>
+                                                                {{ $notification->created_at->diffForHumans() }}
+                                                            </span>
+                                                            </a>
+                                                        </li>
+                                                    @endif
+                                                @empty
+                                                    <li><a class="dropdown-item"> لا يوجد لديك اشعارات في الوقت
+                                                            الحالي </a>
+                                                    </li>
+                                                    <hr>
+                                                @endforelse
+                                            </ul>
+                                        </div>
+                                    </li>
+
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="western_link" href="{{url('user/dashboard')}}">
+                                            حسابي </a>
                                     </li>
                                 @else
                                     <li class="nav-item">
-                                        <a class="nav-link" id="western_link" href="{{url('register')}}"> تسجيل دخول  </a>
+                                        <a class="nav-link" id="western_link" href="{{url('register')}}"> تسجيل
+                                            دخول </a>
                                     </li>
                                 @endif
 
@@ -71,11 +112,11 @@
                         <a class="nav-link" aria-current="page" href="{{url('/')}}"> الرئيسية </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">   الاسئلة الشائعة </a>
+                        <a class="nav-link" href="#"> الاسئلة الشائعة </a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="#">  تواصل معنا </a>
+                        <a class="nav-link" href="#"> تواصل معنا </a>
                     </li>
 
                 </ul>
@@ -85,7 +126,7 @@
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         // Get current page from URL
         const path = window.location.pathname.split("/").pop();
 
@@ -107,19 +148,19 @@
 </script>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         const mobileMenuIcon = document.querySelector('.mobile_menu');
         const newLinks = document.querySelector('.new_links');
         const overlay = document.querySelector('.overlay');
         const body = document.body;
 
-        mobileMenuIcon.addEventListener('click', function() {
+        mobileMenuIcon.addEventListener('click', function () {
             newLinks.classList.toggle('active');
             overlay.classList.toggle('active');
             body.classList.toggle('overlay-active');
         });
 
-        overlay.addEventListener('click', function() {
+        overlay.addEventListener('click', function () {
             newLinks.classList.remove('active');
             overlay.classList.remove('active');
             body.classList.remove('overlay-active');

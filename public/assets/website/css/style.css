@@ -245,6 +245,8 @@ header {
     display: none
 }
 
+
+
 /***************************************/
 
 body.overlay-active {
@@ -546,6 +548,41 @@ body.overlay-active {
     text-decoration: none;
     color: #fff
 }
+
+
+.dropdown-toggle::after{
+    display: none;
+}
+
+.nav-item .dropdown-toggle .bi-bell-fill{
+    font-size: 20px;
+}
+.dropdown{
+    position: relative;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+.dropdown .counter{
+    position: absolute;
+    top: -15px;
+    background: red;
+    color: #fff;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    left: 20px;
+}
+.navbar-nav .dropdown-menu{
+    width: 270px;
+    max-height: 150px;
+    overflow: scroll;
+}
+
+
+
+
+
+
 
 
 /****************** Start Hero Section ****************/
