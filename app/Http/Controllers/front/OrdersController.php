@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
+use GuzzleHttp\Client;
 
 class OrdersController extends Controller
 {
@@ -392,6 +393,112 @@ class OrdersController extends Controller
         }
         return view('front.users.transaction_invoice', compact('transaction'));
     }
+
+    ///////////////////// Start Pay Invoice
+    ///
+    public function pay_invoice()
+    {
+        $client = new \GuzzleHttp\Client();
+
+        try {
+            $response = $client->post('https://api.tap.company/v2/charges', [
+                'json' => [
+                    "amount" => 100, // Total amount to charge (in SAR)
+                    "currency" => "SAR",
+                    "threeDSecure" => true,
+                    "save_card" => false,
+                    "description" => "Purchase of Products", // Description of the purchase
+                    "receipt" => [
+                        "email" => true,
+                        "sms" => true
+                    ],
+                    "customer" => [
+                        "first_name" => 'mohamedramadan',
+                        "email" => 'mr@gmail.com',
+                        "phone" => [
+                            "number" => '000000'
+                        ]
+                    ],
+                    "source" => [
+                        "id" => "src_all"
+                    ],
+                    "post" => [
+                        "url" => url('pay_invoice')
+                    ],
+                    "redirect" => [
+                        "url" => url('pay_invoice/callback')
+                    ],
+                    "metadata" => [
+                        "udf1" => "Metadata 1"
+                    ]
+                ],
+                'headers' => [
+                    "authorization" => "Bearer sk_test_nsgFzA1ulL5432S8YfeENq9U", // Sk Live
+                    'accept' => 'application/json',
+                    'content-type' => 'application/json',
+                ],
+            ]);
+
+            $output = json_decode($response->getBody());
+
+            // تأكد من أن URL يحتوي على رابط صالح
+            if (isset($output->transaction->url)) {
+                // إعادة التوجيه باستخدام طريقة Laravel redirect
+                return redirect()->away($output->transaction->url);
+            } else {
+                return back()->withErrors(['error' => 'URL غير موجود في الاستجابة من بوابة الدفع.']);
+            }
+        } catch (\Exception $e) {
+            // في حال حدوث خطأ، يمكن إرجاع المستخدم إلى الصفحة السابقة مع رسالة خطأ
+            return back()->withErrors(['error' => 'حدث خطأ أثناء معالجة الدفع: ' . $e->getMessage()]);
+        }
+    }
+
+    public function callback(Request $request)
+    {
+        // الحصول على البيانات المستلمة من بوابة الدفع
+        // الحصول على tap_id من الـ callback
+        $tapId = $request->input('tap_id');
+
+        if (!$tapId) {
+            // التعامل مع حالة عدم وجود tap_id
+           // return redirect()->route('payment.failed')->withErrors('لا يوجد tap_id في الاستجابة.');
+            return "Failed Not Found TabId";
+        }
+
+        // استرجاع تفاصيل المعاملة باستخدام tap_id
+        $client = new Client();
+        $response = $client->request('GET', 'https://api.tap.company/v2/charges/' . $tapId, [
+            'headers' => [
+                'Authorization' => 'Bearer sk_test_nsgFzA1ulL5432S8YfeENq9U', // استبدل بالـ API Key الخاص بك
+                'Accept' => 'application/json',
+            ],
+        ]);
+        $details = json_decode($response->getBody(), true);
+
+        // تحقق من حالة الدفع
+        if ($details['status'] === 'CAPTURED') {
+            // الدفع ناجح
+            // تحديث حالة الطلب في قاعدة البيانات
+//            $order = Order::where('transaction_id', $tapId)->first();
+//            if ($order) {
+//                $order->status = 'paid';
+//                $order->save();
+//            }
+
+            return "Successsssss";
+            // إعادة توجيه إلى صفحة النجاح
+            //return redirect()->route('payment.success');
+        } else {
+            // الدفع فشل
+            // إعادة توجيه إلى صفحة الفشل
+          //  return redirect()->route('payment.failed')->withErrors('الدفع فشل.');
+            return "Faileeed";
+        }
+
+
+    }
+
 
     public function delete($id)
     {

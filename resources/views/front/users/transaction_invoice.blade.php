@@ -63,7 +63,7 @@
                                 </div>
 
                                 <div class="add_order">
-                                    <form id="multiStepForm" action="#" method="post" enctype="multipart/form-data">
+                                    <form id="multiStepForm" action="{{url('pay_invoice')}}" method="post" enctype="multipart/form-data">
                                         @csrf
                                         <!-- الخطوة 1 -->
                                         <div class="step" id="step1">
