@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\front\UserController;
 use \App\Http\Controllers\front\OrdersController;
-
+use \App\Http\Controllers\front\PaymentTransactionsController;
 Route::get('/', function () {
     return view('front.index');
 });
@@ -40,10 +40,17 @@ Route::controller(OrdersController::class)->group(function () {
         Route::get('/get-inspection-price/{typeId}', 'getInspectionPrice');
         Route::post('transaction/selectcenter/{transaction_id}','select_center');
         Route::match(['post','get'],'transaction_invoice/{seller_id}-{transaction_slug}','transaction_invoice');
-        Route::post('pay_invoice','pay_invoice');
-        Route::get('pay_invoice/callback','callback');
     });
     Route::get('transaction/{seller_id}-{slug}', 'show');
+});
+
+////////////// Payment Transaction Controller
+///
+Route::controller(PaymentTransactionsController::class)->group(function (){
+    Route::post('pay_invoice/{id}','pay_invoice');
+    Route::get('pay_invoice/callback/{id}','callback');
+    Route::get('payment_success','payment_success')->name('payment.success');
+    Route::get('payment_failed','payment_failed')->name('payment.failed');
 });
 
 
