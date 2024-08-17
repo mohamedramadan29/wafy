@@ -5,6 +5,8 @@ namespace App\Http\Controllers\front;
 use App\Http\Controllers\Controller;
 use App\Http\Traits\Message_Trait;
 use App\Http\Traits\Upload_Images;
+use App\Models\admin\InsepctionCenter;
+use App\Models\admin\InspectionType;
 use App\Models\front\Order;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -245,8 +247,11 @@ class UserController extends Controller
 
     public function dashboard()
     {
+        $centers = InsepctionCenter::where('status', 1)->get();
+
+        $types = InspectionType::where('status', 1)->get();
         $transactions = Order::with('seller','buyer')->where('seller_id', Auth::id())->orwhere('buyer_id', Auth::id())->orderby('id', 'DESC')->limit(5)->get();
-        return view('front.users.dashboard', compact('transactions'));
+        return view('front.users.dashboard', compact('transactions','centers','types'));
     }
 
 

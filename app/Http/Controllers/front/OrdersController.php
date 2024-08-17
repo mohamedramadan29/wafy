@@ -89,6 +89,7 @@ class OrdersController extends Controller
                 'title.required' => '  من فضلك ادخل عنوان العرض  ',
                 'price.required' => ' من فضلك ادخل سعر السيارة  ',
                 'description.required' => ' من فضلك ادخل الوصف بشكل تفصيلي  ',
+                'description.min'=>' من فضلك ادخل وصف كامل للسيارة بشكل تفصيلي  ',
                 'car_mark.required' => ' من فضلك ادخل حدد الماركة ',
                 'car_model.required' => '  من فضلك حدد الموديل  ',
                 'car_year.required' => ' من فضلك حدد سنة الصنع  ',
@@ -109,7 +110,7 @@ class OrdersController extends Controller
                 return Redirect::back()->withInput()->withErrors($validator);
             }
 
-            $CountOldSlug = Order::where('slug', $this->CustomeSlug($data['title']))->count();
+            $CountOldSlug = Order::where('slug', $this->CustomeSlug($data['title']))->where('seller_id', Auth::id())->count();
             if ($CountOldSlug > 0) {
                 return Redirect::back()->withInput()->withErrors(' اسم المعاملة متواجد من قبل من فضلك عدل الاسم الحالي  ');
             }
@@ -330,7 +331,6 @@ class OrdersController extends Controller
         $transaction = Order::findOrFail($transaction_id);
         if ($request->isMethod('post')) {
             $data = $request->all();
-
             $rules = [
                 'center' => 'required',
                 'inspection_type' => 'required',
@@ -378,6 +378,7 @@ class OrdersController extends Controller
             $transaction_step->user_name = Auth::user()->name;
             $transaction_step->title = ' تم تحديد مركز الصيانة والنوع والسعر  ';
             $transaction_step->save();
+            return $this->success_message(' تم تحديد مركز الصيانة وانشاء فاتورة الدفع بنجاح  ');
         }
     }
 
