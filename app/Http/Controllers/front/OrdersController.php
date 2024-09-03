@@ -84,6 +84,9 @@ class OrdersController extends Controller
                 'car_accedant' => 'required',
                 'car_any_damage' => 'required',
                 'tire_condition' => 'required',
+                'images' => 'required',
+                'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp',
+
             ];
             $messages = [
                 'title.required' => '  من فضلك ادخل عنوان العرض  ',
@@ -103,6 +106,9 @@ class OrdersController extends Controller
                 'car_accedant.required' => '',
                 'car_any_damage.required' => '',
                 'tire_condition.required' => '',
+                'images.required' => 'من فضلك قم برفع صورة واحدة على الأقل للسيارة',
+                'images.*.image' => 'يجب أن تكون جميع الملفات المرفوعة صوراً',
+                'images.*.mimes' => 'يجب أن تكون الصورة من نوع: jpeg, png, jpg, gif, svg',
             ];
 
             $validator = Validator::make($data, $rules, $messages);
