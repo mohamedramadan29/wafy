@@ -72,7 +72,7 @@
                                             <div class="row">
                                                 <div class="col-lg-6 col-12">
                                                     <div class="box">
-                                                        <label for="title">  عنوان المعاملة   <span class="star"> *  </span>
+                                                        <label for="title"> عنوان الاعلان :  <span class="star"> *  </span>
                                                         </label>
                                                         <input type="text" name="title" id="title" class="form-control"
                                                                value="{{old('title')}}">
