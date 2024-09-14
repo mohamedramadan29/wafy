@@ -40,6 +40,7 @@ Route::controller(OrdersController::class)->group(function () {
         Route::get('/get-inspection-price/{typeId}', 'getInspectionPrice');
         Route::post('transaction/selectcenter/{transaction_id}','select_center');
         Route::match(['post','get'],'transaction_invoice/{seller_id}-{transaction_slug}','transaction_invoice');
+        Route::get('/get-types/{markId}','getTypes');
     });
     Route::get('transaction/{seller_id}-{slug}', 'show');
 });

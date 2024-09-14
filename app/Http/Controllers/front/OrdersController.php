@@ -8,6 +8,7 @@ use App\Http\Traits\Slug_Trait;
 use App\Http\Traits\Upload_Images;
 use App\Models\admin\InsepctionCenter;
 use App\Models\admin\InspectionType;
+use App\Models\admin\TraderMark;
 use App\Models\front\Order;
 use App\Models\front\OrderQuestion;
 use App\Models\front\TransactionStep;
@@ -72,43 +73,42 @@ class OrdersController extends Controller
                 'price' => 'required|numeric',
                 'description' => 'required|min:20',
                 'car_mark' => 'required',
+                'car_mark_type' => 'required',
                 'car_model' => 'required',
-                'car_year' => 'required',
-                'body_type' => 'required',
-                'door_number' => 'required',
+                'car_category' => 'required',
+                'car_gear' => 'required',
                 'car_color' => 'required',
                 'car_distance' => 'required',
                 'solar_type' => 'required',
-                'engine_capacity' => 'required',
-                'car_transmission' => 'required',
-                'car_accedant' => 'required',
-                'car_any_damage' => 'required',
-                'tire_condition' => 'required',
-                'images' => 'required',
-                'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg,webp',
+                'car_board' => 'required',
+                'front_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp',
+                'back_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp',
+                'right_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp',
+                'left_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp',
 
             ];
             $messages = [
                 'title.required' => '  من فضلك ادخل عنوان العرض  ',
                 'price.required' => ' من فضلك ادخل سعر السيارة  ',
                 'description.required' => ' من فضلك ادخل الوصف بشكل تفصيلي  ',
-                'description.min'=>' من فضلك ادخل وصف كامل للسيارة بشكل تفصيلي  ',
+                'description.min' => ' من فضلك ادخل وصف كامل للسيارة بشكل تفصيلي  ',
                 'car_mark.required' => ' من فضلك ادخل حدد الماركة ',
                 'car_model.required' => '  من فضلك حدد الموديل  ',
-                'car_year.required' => ' من فضلك حدد سنة الصنع  ',
-                'body_type.required' => ' من فضلك حدد نوع الجسم  ',
-                'door_number.required' => ' من فضلك ادخل عدد الابواب  ',
                 'car_color.required' => ' من فضلك ادخل لون السيارة  ',
-                'car_distance.required' => '',
                 'solar_type.required' => ' من فضلك حدد نوع الوقود ',
-                'engine_capacity.required' => ' من فضلك حدد سعة الماتور  ',
-                'car_transmission.required' => '',
-                'car_accedant.required' => '',
-                'car_any_damage.required' => '',
-                'tire_condition.required' => '',
-                'images.required' => 'من فضلك قم برفع صورة واحدة على الأقل للسيارة',
-                'images.*.image' => 'يجب أن تكون جميع الملفات المرفوعة صوراً',
-                'images.*.mimes' => 'يجب أن تكون الصورة من نوع: jpeg, png, jpg, gif, svg',
+              //  'images.required' => 'من فضلك قم برفع صورة واحدة على الأقل للسيارة',
+                'front_image.required'=>' من فضلك ادخل صورة للسيارة من الامام ',
+                'front_image.image'=>' من فضلك ادخل صورة للسيارة بشكل صحيح  ',
+                'front_image.mimes'=>' يجب أن تكون الصورة من نوع: jpeg, png, jpg, gif, svg ',
+                'back_image.required'=>' من فضلك ادخل صورة للسيارة من الخلف ',
+                'back_image.image'=>' من فضلك ادخل صورة للسيارة بشكل صحيح  ',
+                'back_image.mimes'=>' يجب أن تكون الصورة من نوع: jpeg, png, jpg, gif, svg ',
+                'right_image.required'=>' من فضلك ادخل صورة للسيارة من اليمين ',
+                'right_image.image'=>' من فضلك ادخل صورة للسيارة بشكل صحيح  ',
+                'right_image.mimes'=>' يجب أن تكون الصورة من نوع: jpeg, png, jpg, gif, svg ',
+                'left_image.required'=>' من فضلك ادخل صورة للسيارة من اليسار ',
+                'left_image.image'=>' من فضلك ادخل صورة للسيارة بشكل صحيح  ',
+                'left_image.mimes'=>' يجب أن تكون الصورة من نوع: jpeg, png, jpg, gif, svg ',
             ];
 
             $validator = Validator::make($data, $rules, $messages);
@@ -120,13 +120,32 @@ class OrdersController extends Controller
             if ($CountOldSlug > 0) {
                 return Redirect::back()->withInput()->withErrors(' اسم المعاملة متواجد من قبل من فضلك عدل الاسم الحالي  ');
             }
-            $fileimages = [];
-            if ($request->hasFile('images')) {
-                foreach ($request->images as $image) {
-                    $fileimages[] = $this->saveImage($image, public_path('assets/uploads/car_images/'));
+            if ($request->hasFile('front_image')) {
+                // التحقق من أن الملف صورة قبل محاولة حفظه
+                if ($request->file('front_image')->isValid()) {
+                    $frontimage = $this->saveImage($request->file('front_image'), public_path('assets/uploads/car_images/'));
                 }
-                $lastfileimages = implode(',', $fileimages);
             }
+            if ($request->hasFile('back_image')) {
+                // التحقق من أن الملف صورة قبل محاولة حفظه
+                if ($request->file('back_image')->isValid()) {
+                    $backimage = $this->saveImage($request->file('back_image'), public_path('assets/uploads/car_images/'));
+                }
+            }
+
+            if ($request->hasFile('left_image')) {
+                // التحقق من أن الملف صورة قبل محاولة حفظه
+                if ($request->file('left_image')->isValid()) {
+                    $leftimage = $this->saveImage($request->file('left_image'), public_path('assets/uploads/car_images/'));
+                }
+            }
+            if ($request->hasFile('right_image')) {
+                // التحقق من أن الملف صورة قبل محاولة حفظه
+                if ($request->file('right_image')->isValid()) {
+                    $rightimage = $this->saveImage($request->file('right_image'), public_path('assets/uploads/car_images/'));
+                }
+            }
+
             DB::beginTransaction();
             $new_order = new Order();
             $new_order->seller_id = auth()->id();
@@ -134,26 +153,27 @@ class OrdersController extends Controller
             $new_order->slug = $this->CustomeSlug($data['title']);
             $new_order->price = $data['price'];
             $new_order->description = $data['description'];
-            $new_order->images = $lastfileimages;
+            $new_order->front_image = $frontimage;
+            $new_order->back_image = $backimage;
+            $new_order->left_image = $leftimage;
+            $new_order->right_image = $rightimage;
             $new_order->link = url('transaction/' . Auth::id() . '-' . $this->CustomeSlug($data['title']));
             $new_order->save();
             //////// Insert Car Details Questions
             ///
+            $data['car_double'] = $request->has('car_double') ? '1' : '0';
             $order_question = new OrderQuestion();
             $order_question->order_id = $new_order->id;
             $order_question->car_mark = $data['car_mark'];
+            $order_question->car_mark_type = $data['car_mark_type'];
             $order_question->car_model = $data['car_model'];
-            $order_question->car_year = $data['car_year'];
-            $order_question->body_type = $data['body_type'];
-            $order_question->door_number = $data['door_number'];
+            $order_question->car_category = $data['car_category'];
+            $order_question->car_gear = $data['car_gear'];
             $order_question->car_color = $data['car_color'];
             $order_question->car_distance = $data['car_distance'];
+            $order_question->car_double = $data['car_double'];
             $order_question->solar_type = $data['solar_type'];
-            $order_question->engine_capacity = $data['engine_capacity'];
-            $order_question->car_transmission = $data['car_transmission'];
-            $order_question->car_accedant = $data['car_accedant'];
-            $order_question->car_any_damage = $data['car_any_damage'];
-            $order_question->tire_condition = $data['tire_condition'];
+            $order_question->car_board = $data['car_board'];
             $order_question->save();
 
             ////////////// Add Order Steps
@@ -172,7 +192,29 @@ class OrdersController extends Controller
 
             return $this->success_message(' تم اضافة المعاملة بنجاح  ');
         }
-        return view('front.users.start_order');
+
+        $marks = TraderMark::all();
+        return view('front.users.start_order', compact('marks'));
+    }
+
+    public function getTypes($markid)
+    {
+        // جلب الماركة من خلال ID
+        $traderMark = TraderMark::find($markid);
+
+        // تحقق من وجود الماركة
+        if ($traderMark) {
+            $types = explode('-', $traderMark->types); // افتراض أن الأنواع موجودة كقائمة مفصولة بفواصل
+            $typeArray = [];
+            foreach ($types as $type) {
+                $typeArray[$type] = $type;
+            }
+
+            // إرجاع الأنواع في صيغة JSON
+            return response()->json($typeArray);
+        }
+        // في حالة عدم وجود الماركة
+        return response()->json([]);
     }
 
     public function update(Request $request, $seller_id, $slug)

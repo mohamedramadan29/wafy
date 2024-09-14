@@ -950,13 +950,32 @@ form .car_images img{
 }
 /*************** End All Transaction **********/
 
-
-
-
-
-
-
-
 /*************** End Main Dashboard ***********/
 
+.select_options_category{
+
+}
+.select_options_category label{
+    border: 1px solid #ccc;
+    color: #888888;
+    padding-right: 45px;
+    padding-left: 45px;
+}
+.select_options_category  .btn-check:checked+.btn{
+    background-color: #c9e6ff;
+    border-color: #c9e6ff;
+    position: relative;
+
+}
+.select_options_category  .btn-check:checked+.btn::after{
+    content: '';
+    position: absolute;
+    top: 11px;
+    left: 3px;
+    width: 15px; /* حجم الأيقونة */
+    height: 15px;
+    background-image: url('https://cdn.jsdelivr.net/npm/bootstrap-icons/icons/check-circle-fill.svg'); /* رابط الأيقونة */
+    background-size: contain;
+    background-repeat: no-repeat;
+}
 
