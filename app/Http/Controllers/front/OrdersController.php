@@ -71,7 +71,7 @@ class OrdersController extends Controller
             $rules = [
                 'title' => 'required',
                 'price' => 'required|numeric',
-                'description' => 'required|min:20',
+                'description' => 'required',
                 'car_mark' => 'required',
                 'car_mark_type' => 'required',
                 'car_model' => 'required',
@@ -80,7 +80,8 @@ class OrdersController extends Controller
                 'car_color' => 'required',
                 'car_distance' => 'required',
                 'solar_type' => 'required',
-                'car_board' => 'required',
+                'car_board_letters' => 'required',
+                'car_board_numbers' => 'required',
                 'front_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp',
                 'back_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp',
                 'right_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp',
@@ -91,24 +92,23 @@ class OrdersController extends Controller
                 'title.required' => '  من فضلك ادخل عنوان العرض  ',
                 'price.required' => ' من فضلك ادخل سعر السيارة  ',
                 'description.required' => ' من فضلك ادخل الوصف بشكل تفصيلي  ',
-                'description.min' => ' من فضلك ادخل وصف كامل للسيارة بشكل تفصيلي  ',
                 'car_mark.required' => ' من فضلك ادخل حدد الماركة ',
                 'car_model.required' => '  من فضلك حدد الموديل  ',
                 'car_color.required' => ' من فضلك ادخل لون السيارة  ',
                 'solar_type.required' => ' من فضلك حدد نوع الوقود ',
-              //  'images.required' => 'من فضلك قم برفع صورة واحدة على الأقل للسيارة',
-                'front_image.required'=>' من فضلك ادخل صورة للسيارة من الامام ',
-                'front_image.image'=>' من فضلك ادخل صورة للسيارة بشكل صحيح  ',
-                'front_image.mimes'=>' يجب أن تكون الصورة من نوع: jpeg, png, jpg, gif, svg ',
-                'back_image.required'=>' من فضلك ادخل صورة للسيارة من الخلف ',
-                'back_image.image'=>' من فضلك ادخل صورة للسيارة بشكل صحيح  ',
-                'back_image.mimes'=>' يجب أن تكون الصورة من نوع: jpeg, png, jpg, gif, svg ',
-                'right_image.required'=>' من فضلك ادخل صورة للسيارة من اليمين ',
-                'right_image.image'=>' من فضلك ادخل صورة للسيارة بشكل صحيح  ',
-                'right_image.mimes'=>' يجب أن تكون الصورة من نوع: jpeg, png, jpg, gif, svg ',
-                'left_image.required'=>' من فضلك ادخل صورة للسيارة من اليسار ',
-                'left_image.image'=>' من فضلك ادخل صورة للسيارة بشكل صحيح  ',
-                'left_image.mimes'=>' يجب أن تكون الصورة من نوع: jpeg, png, jpg, gif, svg ',
+                //  'images.required' => 'من فضلك قم برفع صورة واحدة على الأقل للسيارة',
+                'front_image.required' => ' من فضلك ادخل صورة للسيارة من الامام ',
+                'front_image.image' => ' من فضلك ادخل صورة للسيارة بشكل صحيح  ',
+                'front_image.mimes' => ' يجب أن تكون الصورة من نوع: jpeg, png, jpg, gif, svg ',
+                'back_image.required' => ' من فضلك ادخل صورة للسيارة من الخلف ',
+                'back_image.image' => ' من فضلك ادخل صورة للسيارة بشكل صحيح  ',
+                'back_image.mimes' => ' يجب أن تكون الصورة من نوع: jpeg, png, jpg, gif, svg ',
+                'right_image.required' => ' من فضلك ادخل صورة للسيارة من اليمين ',
+                'right_image.image' => ' من فضلك ادخل صورة للسيارة بشكل صحيح  ',
+                'right_image.mimes' => ' يجب أن تكون الصورة من نوع: jpeg, png, jpg, gif, svg ',
+                'left_image.required' => ' من فضلك ادخل صورة للسيارة من اليسار ',
+                'left_image.image' => ' من فضلك ادخل صورة للسيارة بشكل صحيح  ',
+                'left_image.mimes' => ' يجب أن تكون الصورة من نوع: jpeg, png, jpg, gif, svg ',
             ];
 
             $validator = Validator::make($data, $rules, $messages);
@@ -173,7 +173,8 @@ class OrdersController extends Controller
             $order_question->car_distance = $data['car_distance'];
             $order_question->car_double = $data['car_double'];
             $order_question->solar_type = $data['solar_type'];
-            $order_question->car_board = $data['car_board'];
+            $order_question->car_board_letters = $data['car_board_letters'];
+            $order_question->car_board_numbers = $data['car_board_numbers'];
             $order_question->save();
 
             ////////////// Add Order Steps
@@ -197,6 +198,26 @@ class OrdersController extends Controller
         return view('front.users.start_order', compact('marks'));
     }
 
+//    public function getTypes($markid)
+//    {
+//        // جلب الماركة من خلال ID
+//        $traderMark = TraderMark::find($markid);
+//
+//        // تحقق من وجود الماركة
+//        if ($traderMark) {
+//            $types = explode('-', $traderMark->types); // افتراض أن الأنواع موجودة كقائمة مفصولة بفواصل
+//            $typeArray = [];
+//            foreach ($types as $type) {
+//                $typeArray[$type] = $type;
+//            }
+//
+//            // إرجاع الأنواع في صيغة JSON
+//            return response()->json($typeArray);
+//        }
+//        // في حالة عدم وجود الماركة
+//        return response()->json([]);
+//    }
+
     public function getTypes($markid)
     {
         // جلب الماركة من خلال ID
@@ -204,49 +225,62 @@ class OrdersController extends Controller
 
         // تحقق من وجود الماركة
         if ($traderMark) {
-            $types = explode('-', $traderMark->types); // افتراض أن الأنواع موجودة كقائمة مفصولة بفواصل
+            // افتراض أن الأنواع موجودة كقائمة مفصولة بعلامة "-"
+            $types = explode('-', $traderMark->types);
             $typeArray = [];
+
             foreach ($types as $type) {
-                $typeArray[$type] = $type;
+                // إزالة المسافات من بداية ونهاية السلسلة النصية
+                $type = trim($type);
+                if (!empty($type)) { // التأكد من أن النوع ليس فارغاً بعد التقطيع
+                    $typeArray[$type] = $type;
+                }
             }
 
             // إرجاع الأنواع في صيغة JSON
             return response()->json($typeArray);
         }
+
         // في حالة عدم وجود الماركة
         return response()->json([]);
     }
 
+
     public function update(Request $request, $seller_id, $slug)
     {
-
-        $transaction_count = Order::with('question')->where('seller_id', Auth::id())->where('slug', $slug)->count();
-        if ($transaction_count > 0) {
+        $transactioncount = Order::with('question')->where('seller_id', Auth::id())->where('slug', $slug)->count();
+       // dd($transactioncount);
+        if ($transactioncount > 0) {
             $transaction = Order::with('question')->where('seller_id', Auth::id())->where('slug', $slug)->first();
-            $transaction_question = OrderQuestion::findOrFail($transaction['id']);
+           // $transaction_question = OrderQuestion::findOrFail($transaction['id']);
+            $transaction_question = OrderQuestion::where('order_id',$transaction['id'])->first();
         } else {
             abort('404');
         }
+
+
         if ($request->isMethod('post')) {
             $data = $request->all();
             //dd($data);
             $rules = [
                 'title' => 'required',
                 'price' => 'required|numeric',
-                'description' => 'required|min:20',
+                'description' => 'required',
                 'car_mark' => 'required',
+                'car_mark_type' => 'required',
                 'car_model' => 'required',
-                'car_year' => 'required',
-                'body_type' => 'required',
-                'door_number' => 'required',
+                'car_category' => 'required',
+                'car_gear' => 'required',
                 'car_color' => 'required',
                 'car_distance' => 'required',
                 'solar_type' => 'required',
-                'engine_capacity' => 'required',
-                'car_transmission' => 'required',
-                'car_accedant' => 'required',
-                'car_any_damage' => 'required',
-                'tire_condition' => 'required',
+                'car_board_letters' => 'required',
+                'car_board_numbers' => 'required',
+                'front_image' => 'image|mimes:jpeg,png,jpg,gif,svg,webp',
+                'back_image' => 'image|mimes:jpeg,png,jpg,gif,svg,webp',
+                'right_image' => 'image|mimes:jpeg,png,jpg,gif,svg,webp',
+                'left_image' => 'image|mimes:jpeg,png,jpg,gif,svg,webp',
+
             ];
             $messages = [
                 'title.required' => '  من فضلك ادخل عنوان العرض  ',
@@ -254,34 +288,84 @@ class OrdersController extends Controller
                 'description.required' => ' من فضلك ادخل الوصف بشكل تفصيلي  ',
                 'car_mark.required' => ' من فضلك ادخل حدد الماركة ',
                 'car_model.required' => '  من فضلك حدد الموديل  ',
-                'car_year.required' => ' من فضلك حدد سنة الصنع  ',
-                'body_type.required' => ' من فضلك حدد نوع الجسم  ',
-                'door_number.required' => ' من فضلك ادخل عدد الابواب  ',
                 'car_color.required' => ' من فضلك ادخل لون السيارة  ',
-                'car_distance.required' => '',
                 'solar_type.required' => ' من فضلك حدد نوع الوقود ',
-                'engine_capacity.required' => ' من فضلك حدد سعة الماتور  ',
-                'car_transmission.required' => '',
-                'car_accedant.required' => '',
-                'car_any_damage.required' => '',
-                'tire_condition.required' => '',
+                //  'images.required' => 'من فضلك قم برفع صورة واحدة على الأقل للسيارة',
+
+                'front_image.image' => ' من فضلك ادخل صورة للسيارة بشكل صحيح  ',
+                'front_image.mimes' => ' يجب أن تكون الصورة من نوع: jpeg, png, jpg, gif, svg ',
+                'back_image.image' => ' من فضلك ادخل صورة للسيارة بشكل صحيح  ',
+                'back_image.mimes' => ' يجب أن تكون الصورة من نوع: jpeg, png, jpg, gif, svg ',
+                'right_image.image' => ' من فضلك ادخل صورة للسيارة بشكل صحيح  ',
+                'right_image.mimes' => ' يجب أن تكون الصورة من نوع: jpeg, png, jpg, gif, svg ',
+                'left_image.image' => ' من فضلك ادخل صورة للسيارة بشكل صحيح  ',
+                'left_image.mimes' => ' يجب أن تكون الصورة من نوع: jpeg, png, jpg, gif, svg ',
             ];
             $validator = Validator::make($data, $rules, $messages);
             if ($validator->fails()) {
                 return Redirect::back()->withInput()->withErrors($validator);
             }
 
-            $CountOldSlug = Order::where('slug', $this->CustomeSlug($data['title']))->where('id', '!=', $transaction_question['id'])->count();
+            $CountOldSlug = Order::where('slug', $this->CustomeSlug($data['title']))->where('id', '!=', $transaction['id'])->count();
             if ($CountOldSlug > 0) {
                 return Redirect::back()->withInput()->withErrors(' اسم المعاملة متواجد من قبل من فضلك عدل الاسم الحالي  ');
             }
-            $fileimages = [];
-            if ($request->hasFile('images')) {
-                foreach ($request->images as $image) {
-                    $fileimages[] = $this->saveImage($image, public_path('assets/uploads/car_images/'));
+
+            if ($request->hasFile('front_image')) {
+                $oldFrontImage = public_path('assets/uploads/car_images/' . $transaction->front_image);
+                if (file_exists($oldFrontImage)) {
+                    unlink($oldFrontImage);
                 }
-                $lastfileimages = implode(',', $fileimages);
+                if ($request->file('front_image')->isValid()) {
+                    $frontImagePath = $this->saveImage($request->file('front_image'), public_path('assets/uploads/car_images/'));
+                    $transaction->front_image = $frontImagePath;
+                    $transaction->save();
+                }
             }
+            if ($request->hasFile('back_image')) {
+                $oldBackImage = public_path('assets/uploads/car_images/' . $transaction->back_image);
+                if (file_exists($oldBackImage)) {
+                    unlink($oldBackImage);
+                }
+                if ($request->file('back_image')->isValid()) {
+                    $backImagePath = $this->saveImage($request->file('back_image'), public_path('assets/uploads/car_images/'));
+                    $transaction->back_image = $backImagePath;
+                    $transaction->save();
+                }
+            }
+
+            if ($request->hasFile('right_image')) {
+                $oldRightImage = public_path('assets/uploads/car_images/' . $transaction->right_image);
+                if (file_exists($oldRightImage)) {
+                    unlink($oldRightImage);
+                }
+                if ($request->file('right_image')->isValid()) {
+                    $rightImagePath = $this->saveImage($request->file('right_image'), public_path('assets/uploads/car_images/'));
+                    $transaction->right_image = $rightImagePath;
+                    $transaction->save();
+                }
+            }
+
+            if ($request->hasFile('left_image')) {
+                $oldLeftImage = public_path('assets/uploads/car_images/' . $transaction->left_image);
+                if (file_exists($oldLeftImage)) {
+                    unlink($oldLeftImage);
+                }
+                if ($request->file('left_image')->isValid()) {
+                    $lefttImagePath = $this->saveImage($request->file('left_image'), public_path('assets/uploads/car_images/'));
+                    $transaction->left_image = $lefttImagePath;
+                    $transaction->save();
+                }
+            }
+
+
+//            $fileimages = [];
+//            if ($request->hasFile('images')) {
+//                foreach ($request->images as $image) {
+//                    $fileimages[] = $this->saveImage($image, public_path('assets/uploads/car_images/'));
+//                }
+//                $lastfileimages = implode(',', $fileimages);
+//            }
             DB::beginTransaction();
             $transaction->update([
                 'title' => $data['title'],
@@ -293,33 +377,40 @@ class OrdersController extends Controller
             ]);
             //////// Insert Car Details Questions
             ///
+            $data['car_double'] = $request->has('car_double') ? '1' : '0';
             $transaction_question->update([
                 "car_mark" => $data['car_mark'],
+                "car_mark_type" => $data['car_mark_type'],
                 "car_model" => $data['car_model'],
-                "car_year" => $data['car_year'],
-                "body_type" => $data['body_type'],
-                "door_number" => $data['door_number'],
+                "car_category" => $data['car_category'],
+                "car_gear" => $data['car_gear'],
                 "car_color" => $data['car_color'],
                 "car_distance" => $data['car_distance'],
+                "car_double" => $data['car_double'],
                 "solar_type" => $data['solar_type'],
-                "engine_capacity" => $data['engine_capacity'],
-                "car_transmission" => $data['car_transmission'],
-                "car_accedant" => $data['car_accedant'],
-                "car_any_damage" => $data['car_any_damage'],
-                "tire_condition" => $data['tire_condition'],
+                "car_board_letters" => $data['car_board_letters'],
+                "car_board_numbers" => $data['car_board_numbers'],
             ]);
             DB::commit();
-            return $this->success_message(' تم تعديل المعاملة بنجاح  ');
+            // إعادة التوجيه إلى الرابط الجديد باستخدام الـ seller_id والـ transaction_slug الجديد
+            return redirect()->to('user/transaction/edit/' . $seller_id . '-' . $transaction->slug)
+                ->with('Success_message', 'تم تعديل المعاملة بنجاح');
+          //  return $this->success_message(' تم تعديل المعاملة بنجاح  ');
         }
-        return view('front.users.edit-transaction', compact('transaction'));
+        $marks = TraderMark::all();
+
+        return view('front.users.edit-transaction', compact('transaction', 'marks'));
     }
 
     public function show($seller_id, $slug)
     {
-        $transaction_count = Order::with('question')->where('seller_id', $seller_id)->where('slug', $slug)->count();
-        if ($transaction_count > 0) {
-            $transaction = Order::with('question')->where('seller_id', $seller_id)->where('slug', $slug)->first();
-            $transaction_question = OrderQuestion::findOrFail($transaction['id']);
+        $marks = TraderMark::all();
+        $transactioncount = Order::with('question')->where('seller_id', Auth::id())->where('slug', $slug)->count();
+        // dd($transactioncount);
+        if ($transactioncount > 0) {
+            $transaction = Order::with('question')->where('seller_id', Auth::id())->where('slug', $slug)->first();
+            // $transaction_question = OrderQuestion::findOrFail($transaction['id']);
+            $transaction_question = OrderQuestion::where('order_id',$transaction['id'])->first();
         } else {
             abort('404');
         }
@@ -335,7 +426,7 @@ class OrdersController extends Controller
             }
         }
 
-        return view('front.show-transaction', compact('transaction'));
+        return view('front.show-transaction', compact('transaction','marks'));
     }
 
     public function buyer_start_transaction($seller_id, $slug)

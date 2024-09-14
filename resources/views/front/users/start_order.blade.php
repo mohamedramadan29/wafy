@@ -153,19 +153,19 @@
                                                                 class="star"> *  </span>
                                                         </label>
                                                         <div class="select_options_category">
-                                                            <input type="radio" class="btn-check" name="car_category"
+                                                            <input type="radio" class="btn-check" name="car_category" value="DLX"
                                                                    id="option5" autocomplete="off">
                                                             <label class="btn" for="option5">DLX</label>
 
-                                                            <input type="radio" class="btn-check" name="car_category"
+                                                            <input type="radio" class="btn-check" name="car_category" value="STD"
                                                                    id="option6" autocomplete="off">
                                                             <label class="btn" for="option6">STD</label>
 
-                                                            <input type="radio" class="btn-check" name="car_category"
+                                                            <input type="radio" class="btn-check" name="car_category" value="SUPER DLX"
                                                                    id="option7" autocomplete="off">
                                                             <label class="btn" for="option7">SUPER DLX</label>
 
-                                                            <input type="radio" class="btn-check" name="car_category"
+                                                            <input type="radio" class="btn-check" name="car_category" value="DC"
                                                                    id="option8" autocomplete="off">
                                                             <label class="btn" for="option8">DC</label>
                                                         </div>
@@ -240,14 +240,22 @@
                                                 </div>
 
 
+
                                                 <div class="col-lg-12 col-12">
                                                     <div class="box">
-                                                        <label for="car_board"> رقم لوحة السيارة <span
-                                                                class="star"> *  </span>
-                                                        </label>
-                                                        <input type="text" name="car_board" id="car_board"
-                                                               class="form-control"
-                                                               value="{{old('car_board')}}">
+                                                        <label for="car_board_letters"> رقم لوحة السيارة   <span class="star"> * </span></label>
+                                                        <div class="input-group">
+                                                            <!-- الحقل الخاص بالأحرف -->
+                                                            <input type="text" name="car_board_letters" id="car_board_letters"
+                                                                   class="form-control"
+                                                                   placeholder="أحرف اللوحة" style="text-transform:uppercase;"
+                                                                   value="{{ old('car_board_letters') }}">
+                                                            <!-- الحقل الخاص بالأرقام -->
+                                                            <input type="text" name="car_board_numbers" id="car_board_numbers"
+                                                                   class="form-control"
+                                                                   placeholder="أرقام اللوحة"
+                                                                   value="{{ old('car_board_numbers') }}">
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-6 col-12">
