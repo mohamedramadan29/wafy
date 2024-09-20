@@ -8,6 +8,7 @@ use \App\Http\Controllers\admin\InspectionCenterController;
 use \App\Http\Controllers\admin\InspectionTypeController;
 use \App\Http\Controllers\admin\TransactionController;
 use \App\Http\Controllers\admin\TraderMark;
+use \App\Http\Controllers\admin\CarCondtionQuestionController;
 
 Route::get('/admin', [AdminController::class, 'index'])->name('login');
 Route::group(['prefix' => 'admin'], function () {
@@ -74,11 +75,18 @@ Route::group(['prefix' => 'admin'], function () {
             Route::match(['post','get'],'trademark/update/{id}', 'update');
             Route::post('trademark/delete/{id}', 'delete');
         });
-
         ////////////////////  Start Terms ////////////
         ///
         Route::controller(\App\Http\Controllers\admin\TermController::class)->group(function (){
            Route::match(['post','get'],'terms','index');
+        });
+        ////////////// Start Car Condition Question /////////////
+        ///
+        Route::controller(CarCondtionQuestionController::class)->group(function (){
+          Route::get('questions','index');
+          Route::match(['post','get'],'question/store','store');
+          Route::match(['post','get'],'question/update/{id}','update');
+          Route::post('question/delete/{id}','delete');
         });
     });
 });
