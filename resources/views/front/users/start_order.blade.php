@@ -93,6 +93,7 @@
                                                             <option value=""> -- حدد --</option>
                                                             @foreach($marks as $mark)
                                                                 <option
+                                                                    {{old('car_mark') == $mark['id'] ? 'selected':''}}
                                                                     value="{{$mark['id']}}">{{$mark['name']}}</option>
                                                             @endforeach
                                                         </select>
@@ -110,6 +111,7 @@
                                                 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                                                 <script>
                                                     $(document).ready(function () {
+                                                        var oldCarType = "{{ old('car_mark_type') }}";
                                                         $("#car_mark").on('change', function () {
                                                             var markid = $(this).val();
                                                             if (markid) {
@@ -123,7 +125,8 @@
                                                                         $("#car_type").append('<option value="">-- حدد --</option>');
                                                                         // إضافة الخيارات الجديدة للأنواع
                                                                         $.each(data, function (key, value) {
-                                                                            $('#car_type').append('<option value="' + key + '">' + value + '</option>');
+                                                                            var selected = (key == oldCarType) ? 'selected' : '';
+                                                                            $('#car_type').append('<option value="' + key + '" ' + selected + '>' + value + '</option>');
                                                                         });
                                                                     }
                                                                 });
@@ -132,6 +135,11 @@
                                                                 $('#car_type').append('<option value="">-- حدد --</option>');
                                                             }
                                                         });
+                                                        // في حالة وجود قيمة قديمة للماركة، تحديدها واستدعاء الـ AJAX لتحميل الأنواع الخاصة بها
+                                                        var oldCarMark = "{{ old('car_mark') }}";
+                                                        if (oldCarMark) {
+                                                            $("#car_mark").val(oldCarMark).trigger('change');
+                                                        }
                                                     });
                                                 </script>
 
@@ -142,7 +150,8 @@
                                                         <select name="car_model" id="car_model" class="form-select">
                                                             <option value="">-- حدد --</option>
                                                             @for($year = date('Y') + 1; $year >= 1970 ; $year--)
-                                                                <option value="{{ $year }}">{{ $year }}</option>
+                                                                <option
+                                                                    {{old('car_model') == $year ? 'selected' : ''}} value="{{ $year }}">{{ $year }}</option>
                                                             @endfor
                                                         </select>
                                                     </div>
@@ -153,20 +162,28 @@
                                                                 class="star"> *  </span>
                                                         </label>
                                                         <div class="select_options_category">
-                                                            <input type="radio" class="btn-check" name="car_category" value="DLX"
-                                                                   id="option5" autocomplete="off">
+                                                            <input type="radio" class="btn-check" name="car_category"
+                                                                   value="DLX"
+                                                                   id="option5"
+                                                                   autocomplete="off" {{ old('car_category') == 'DLX' ? 'checked' : '' }}>
                                                             <label class="btn" for="option5">DLX</label>
 
-                                                            <input type="radio" class="btn-check" name="car_category" value="STD"
-                                                                   id="option6" autocomplete="off">
+                                                            <input type="radio" class="btn-check" name="car_category"
+                                                                   value="STD"
+                                                                   id="option6"
+                                                                   autocomplete="off" {{ old('car_category') == 'STD' ? 'checked' : '' }}>
                                                             <label class="btn" for="option6">STD</label>
 
-                                                            <input type="radio" class="btn-check" name="car_category" value="SUPER DLX"
-                                                                   id="option7" autocomplete="off">
+                                                            <input type="radio" class="btn-check" name="car_category"
+                                                                   value="SUPER DLX"
+                                                                   id="option7"
+                                                                   autocomplete="off" {{ old('car_category') == 'SUPER DLX' ? 'checked' : '' }}>
                                                             <label class="btn" for="option7">SUPER DLX</label>
 
-                                                            <input type="radio" class="btn-check" name="car_category" value="DC"
-                                                                   id="option8" autocomplete="off">
+                                                            <input type="radio" class="btn-check" name="car_category"
+                                                                   value="DC"
+                                                                   id="option8"
+                                                                   autocomplete="off" {{ old('car_category') == 'DC' ? 'checked' : '' }}>
                                                             <label class="btn" for="option8">DC</label>
                                                         </div>
                                                     </div>
@@ -178,14 +195,14 @@
                                                         </label>
                                                         <div class="select_options_category">
                                                             <input type="radio" value="قير عادي" class="btn-check"
-                                                                   name="car_gear"
-                                                                   id="gear1" autocomplete="off">
-                                                            <label class="btn" for="gear1">قير عادي </label>
+                                                                   name="car_gear" id="gear1" autocomplete="off"
+                                                                {{ old('car_gear') == 'قير عادي' ? 'checked' : '' }}>
+                                                            <label class="btn" for="gear1">قير عادي</label>
 
                                                             <input type="radio" value="قير اوتماتيك" class="btn-check"
-                                                                   name="car_gear"
-                                                                   id="gear2" autocomplete="off">
-                                                            <label class="btn" for="gear2">قير اوتماتيك </label>
+                                                                   name="car_gear" id="gear2" autocomplete="off"
+                                                                {{ old('car_gear') == 'قير اوتماتيك' ? 'checked' : '' }}>
+                                                            <label class="btn" for="gear2">قير اوتماتيك</label>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -196,17 +213,18 @@
                                                         </label>
                                                         <div class="select_options_category">
                                                             <input type="radio" value="بنزين" class="btn-check"
-                                                                   name="solar_type"
-                                                                   id="solar1" autocomplete="off">
+                                                                   name="solar_type" id="solar1" autocomplete="off"
+                                                                {{ old('solar_type') == 'بنزين' ? 'checked' : '' }}>
                                                             <label class="btn" for="solar1">بنزين</label>
 
                                                             <input type="radio" value="ديزل" class="btn-check"
-                                                                   name="solar_type"
-                                                                   id="solar2" autocomplete="off">
+                                                                   name="solar_type" id="solar2" autocomplete="off"
+                                                                {{ old('solar_type') == 'ديزل' ? 'checked' : '' }}>
                                                             <label class="btn" for="solar2">ديزل</label>
+
                                                             <input type="radio" value="هايبرد" class="btn-check"
-                                                                   name="solar_type"
-                                                                   id="solar3" autocomplete="off">
+                                                                   name="solar_type" id="solar3" autocomplete="off"
+                                                                {{ old('solar_type') == 'هايبرد' ? 'checked' : '' }}>
                                                             <label class="btn" for="solar3">هايبرد</label>
                                                         </div>
                                                     </div>
@@ -214,44 +232,51 @@
                                                 <div class="col-lg-12 col-12">
                                                     <div class="box">
                                                         <label for="car_distance"> الممشي ( <span
-                                                                id="distance_value"> <strong> 1 </strong></span> الف
-                                                            كيلو)
-                                                            <span class="star"> *  </span>
-                                                        </label>
+                                                                id="distance_value"> <strong>{{ old('car_distance', 1) }}</strong></span>
+                                                            الف كيلو) <span class="star"> *  </span></label>
                                                         <input type="range" name="car_distance" class="form-range"
-                                                               id="car_distance" min="1"
-                                                               max="300" value="1" oninput="updateDistance(this.value)">
-
-                                                        <!-- عنصر لعرض القيمة -->
+                                                               id="car_distance"
+                                                               min="1" max="300" value="{{ old('car_distance', 1) }}"
+                                                               oninput="updateDistance(this.value)">
                                                     </div>
                                                     <script>
                                                         function updateDistance(value) {
                                                             document.getElementById('distance_value').textContent = value;
                                                         }
+
+                                                        // ضبط قيمة العرض عند تحميل الصفحة
+                                                        document.addEventListener('DOMContentLoaded', function () {
+                                                            var initialDistance = document.getElementById('car_distance').value;
+                                                            updateDistance(initialDistance);
+                                                        });
                                                     </script>
                                                 </div>
                                                 <div class="col-lg-12 col-12">
                                                     <div class="form-check form-switch" style="margin-bottom: 20px;">
                                                         <input class="form-check-input" name="car_double"
-                                                               type="checkbox" role="switch" id="double">
+                                                               type="checkbox" role="switch" id="double"
+                                                            {{ old('car_double') ? 'checked' : '' }}>
                                                         <label style="font-size: 18px" class="form-check-label"
                                                                for="double"> دبل </label>
                                                     </div>
                                                 </div>
 
 
-
                                                 <div class="col-lg-12 col-12">
                                                     <div class="box">
-                                                        <label for="car_board_letters"> رقم لوحة السيارة   <span class="star"> * </span></label>
+                                                        <label for="car_board_letters"> رقم لوحة السيارة <span
+                                                                class="star"> * </span></label>
                                                         <div class="input-group">
                                                             <!-- الحقل الخاص بالأحرف -->
-                                                            <input type="text" name="car_board_letters" id="car_board_letters"
+                                                            <input type="text" name="car_board_letters"
+                                                                   id="car_board_letters"
                                                                    class="form-control"
-                                                                   placeholder="أحرف اللوحة" style="text-transform:uppercase;"
+                                                                   placeholder="أحرف اللوحة"
+                                                                   style="text-transform:uppercase;"
                                                                    value="{{ old('car_board_letters') }}">
                                                             <!-- الحقل الخاص بالأرقام -->
-                                                            <input type="text" name="car_board_numbers" id="car_board_numbers"
+                                                            <input type="text" name="car_board_numbers"
+                                                                   id="car_board_numbers"
                                                                    class="form-control"
                                                                    placeholder="أرقام اللوحة"
                                                                    value="{{ old('car_board_numbers') }}">
@@ -354,7 +379,6 @@
                                                                onchange="previewImage(this, 'right_preview', 'upload_text_right')">
                                                     </div>
                                                 </div>
-
                                                 <script>
                                                     function previewImage(input, previewId) {
                                                         const file = input.files[0];
@@ -369,18 +393,61 @@
                                                         }
                                                     }
                                                 </script>
-
-                                                {{--                                                <div class="col-lg-12 col-12">--}}
-                                                {{--                                                    <div class="box">--}}
-                                                {{--                                                        <label for="images"> اضافة صور السيارة <span--}}
-                                                {{--                                                                class="star"> *  </span>--}}
-                                                {{--                                                        </label>--}}
-                                                {{--                                                        <input type="file" multiple name="images[]" id="images"--}}
-                                                {{--                                                               class="form-control">--}}
-                                                {{--                                                    </div>--}}
-                                                {{--                                                </div>--}}
                                             </div>
-                                            <button id="submitBtncompany" type="submit" class="btn btn-primary"> تسجيل معاملة <i
+
+                                            <!-- زر الانتقال إلى الخطوة 2 -->
+                                            <button type="button" class="btn btn-primary" onclick="showStep(2)">التالي
+                                                <i style="position: relative;top: 2px"
+                                                   class="bi bi-arrow-left-short"></i></button>
+                                        </div>
+                                        <div class="step" id="step2" style="display:none;">
+                                            <div class="row">
+                                                <h5> حالة السيارة </h5>
+                                                <div class="col-lg-12 col-12">
+                                                    <!-- عرض الأسئلة مع الخيارات -->
+                                                    @foreach($questions as $question)
+                                                        <div class="box mb-4">
+                                                            <label
+                                                                for="question_{{ $question->id }}">{{ $question->question }}
+                                                                <span class="star"> *  </span></label>
+                                                            <div class="select_options_category">
+                                                                @foreach($question->options as $option)
+                                                                    <input type="radio" value="{{ $option->id }}"
+                                                                           class="btn-check"
+                                                                           name="conditions[{{ $question->id }}]"
+                                                                           id="option_{{ $option->id }}"
+                                                                           autocomplete="off"
+                                                                        {{ (old('conditions.' . $question->id) == $option->id) ? 'checked' : '' }}>
+                                                                    <label class="btn"
+                                                                           for="option_{{ $option->id }}"> {{ $option->option }} </label>
+                                                                @endforeach
+                                                            </div>
+                                                        </div>
+                                                    @endforeach
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value=""
+                                                           id="flexCheckDefault">
+                                                    <label class="form-check-label" for="flexCheckDefault">
+                                                        الموافقة علي <a href="{{url('terms')}}" target="_blank"> الشروط
+                                                            والاحكام </a>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <br>
+                                            <!-- زر العودة إلى الخطوة 1 -->
+                                            <button type="button" class="btn btn-secondary" onclick="showStep(1)"><i
+                                                    style="position: relative;top: 2px"
+                                                    class="bi bi-arrow-right-short"></i> السابق
+                                            </button>
+
+                                            <button id="submitBtncompany" type="submit" class="btn btn-primary"> تسجيل
+                                                معاملة <i
                                                     class="bi bi-floppy-fill"></i></button>
                                             <span class="loader" id="loaderCompany"
                                                   style="display: none;">جاري التحميل ... </span>
@@ -392,6 +459,16 @@
                                             document.getElementById('submitBtncompany').style.display = 'none'; // إخفاء زر الإرسال
                                             document.getElementById('loaderCompany').style.display = 'inline'; // إظهار مؤشر التحميل
                                         });
+                                    </script>
+                                    <script>
+                                        function showStep(step) {
+                                            // إخفاء جميع الخطوات
+                                            document.getElementById('step1').style.display = 'none';
+                                            document.getElementById('step2').style.display = 'none';
+
+                                            // إظهار الخطوة المطلوبة
+                                            document.getElementById('step' + step).style.display = 'block';
+                                        }
                                     </script>
 
                                 </div>

@@ -366,17 +366,50 @@
                                                         }
                                                     }
                                                 </script>
-
-                                                {{--                                                <div class="col-lg-12 col-12">--}}
-                                                {{--                                                    <div class="box">--}}
-                                                {{--                                                        <label for="images"> اضافة صور السيارة <span--}}
-                                                {{--                                                                class="star"> *  </span>--}}
-                                                {{--                                                        </label>--}}
-                                                {{--                                                        <input type="file" multiple name="images[]" id="images"--}}
-                                                {{--                                                               class="form-control">--}}
-                                                {{--                                                    </div>--}}
-                                                {{--                                                </div>--}}
                                             </div>
+                                            <!-- زر الانتقال إلى الخطوة 2 -->
+                                            <button type="button" class="btn btn-primary" onclick="showStep(2)">التالي
+                                                <i style="position: relative;top: 2px"
+                                                   class="bi bi-arrow-left-short"></i></button>
+                                        </div>
+                                        <div class="step" id="step2" style="display:none;">
+                                            <div class="row">
+                                                <h5>حالة السيارة</h5>
+                                                <div class="col-lg-12 col-12">
+                                                    <!-- عرض الأسئلة مع الخيارات -->
+                                                    @foreach($questions as $question)
+                                                        <div class="box">
+                                                            <label>{{ $question->question }} <span class="star"> * </span></label>
+                                                            <div class="select_options_category">
+                                                                @foreach($question->options as $option)
+                                                                    @php
+                                                                        // التحقق مما إذا كانت الإجابة الحالية مطابقة للإجابة المحفوظة
+                                                                        $isChecked = $order_conditions->where('question_id', $question->id)
+                                                                            ->where('option_id', $option->id)
+                                                                            ->isNotEmpty();
+                                                                    @endphp
+                                                                    <input type="radio" value="{{ $option->id }}" class="btn-check"
+                                                                           name="conditions[{{ $question->id }}]"
+                                                                           id="conditions[{{ $question->id }}_{{ $option->id }}]"
+                                                                           autocomplete="off"
+                                                                        {{ $isChecked ? 'checked' : '' }}>
+                                                                    <label class="btn" for="conditions[{{ $question->id }}_{{ $option->id }}]">
+                                                                        {{ $option->option }}
+                                                                    </label>
+                                                                @endforeach
+                                                            </div>
+                                                        </div>
+                                                    @endforeach
+                                                </div>
+                                            </div>
+                                            <!-- زر العودة إلى الخطوة 1 -->
+                                            <button type="button" class="btn btn-secondary" onclick="showStep(1)"><i
+                                                    style="position: relative;top: 2px"
+                                                    class="bi bi-arrow-right-short"></i> السابق
+                                            </button>
+
+
+
                                             <button id="submitBtncompany" type="submit" class="btn btn-primary"> تعديل البيانات  <i
                                                     class="bi bi-floppy-fill"></i></button>
                                             <span class="loader" id="loaderCompany"
@@ -389,6 +422,16 @@
                                             document.getElementById('submitBtncompany').style.display = 'none'; // إخفاء زر الإرسال
                                             document.getElementById('loaderCompany').style.display = 'inline'; // إظهار مؤشر التحميل
                                         });
+                                    </script>
+                                    <script>
+                                        function showStep(step) {
+                                            // إخفاء جميع الخطوات
+                                            document.getElementById('step1').style.display = 'none';
+                                            document.getElementById('step2').style.display = 'none';
+
+                                            // إظهار الخطوة المطلوبة
+                                            document.getElementById('step' + step).style.display = 'block';
+                                        }
                                     </script>
                                 </div>
                             </div>

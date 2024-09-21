@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Traits\Message_Trait;
 use App\Http\Traits\Slug_Trait;
 use App\Http\Traits\Upload_Images;
+use App\Models\admin\CarConditionQuestion;
 use App\Models\admin\InsepctionCenter;
 use App\Models\admin\InspectionType;
 use App\Models\admin\TraderMark;
+use App\Models\front\CarCondtion;
 use App\Models\front\Order;
 use App\Models\front\OrderQuestion;
 use App\Models\front\TransactionStep;
@@ -75,7 +77,7 @@ class OrdersController extends Controller
                 'car_mark' => 'required',
                 'car_mark_type' => 'required',
                 'car_model' => 'required',
-                'car_category' => 'required',
+                //'car_category' => 'required',
                 'car_gear' => 'required',
                 'car_color' => 'required',
                 'car_distance' => 'required',
@@ -86,16 +88,21 @@ class OrdersController extends Controller
                 'back_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp',
                 'right_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp',
                 'left_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp',
-
             ];
+
             $messages = [
                 'title.required' => '  من فضلك ادخل عنوان العرض  ',
                 'price.required' => ' من فضلك ادخل سعر السيارة  ',
                 'description.required' => ' من فضلك ادخل الوصف بشكل تفصيلي  ',
                 'car_mark.required' => ' من فضلك ادخل حدد الماركة ',
+                'car_mark_type.required'=>' من فضلك حدد نوع الماركة  ',
                 'car_model.required' => '  من فضلك حدد الموديل  ',
                 'car_color.required' => ' من فضلك ادخل لون السيارة  ',
+                'car_gear.required'=>' من فضلك حدد القير  ',
+                'car_distance.required'=>' من فضلك حدد الممشي  ',
                 'solar_type.required' => ' من فضلك حدد نوع الوقود ',
+                'car_board_letters.required'=>' من فضلك حدد احرف لوحة السيارة ',
+                'car_board_numbers.required'=>'من فضلك ادخل ارقام لوحة السيارة ',
                 //  'images.required' => 'من فضلك قم برفع صورة واحدة على الأقل للسيارة',
                 'front_image.required' => ' من فضلك ادخل صورة للسيارة من الامام ',
                 'front_image.image' => ' من فضلك ادخل صورة للسيارة بشكل صحيح  ',
@@ -177,6 +184,16 @@ class OrdersController extends Controller
             $order_question->car_board_numbers = $data['car_board_numbers'];
             $order_question->save();
 
+            /////////////// Insert Car Question Options
+            ///
+            // حفظ الإجابات على أسئلة حالة السيارة
+            foreach ($data['conditions'] as $question_id => $answer_id) {
+                $order_answer = new CarCondtion();
+                $order_answer->order_id = $new_order->id;
+                $order_answer->question_id = $question_id; // ID السؤال
+                $order_answer->option_id = $answer_id;     // الإجابة المختارة (ID الخيار)
+                $order_answer->save();
+            }
             ////////////// Add Order Steps
             ///
             $transaction_step = new TransactionStep();
@@ -190,12 +207,11 @@ class OrdersController extends Controller
 
             DB::commit();
 
-
             return $this->success_message(' تم اضافة المعاملة بنجاح  ');
         }
-
         $marks = TraderMark::all();
-        return view('front.users.start_order', compact('marks'));
+        $questions = CarConditionQuestion::with('options')->get();
+        return view('front.users.start_order', compact('marks','questions'));
     }
 
 //    public function getTypes($markid)
@@ -248,12 +264,14 @@ class OrdersController extends Controller
 
     public function update(Request $request, $seller_id, $slug)
     {
+
         $transactioncount = Order::with('question')->where('seller_id', Auth::id())->where('slug', $slug)->count();
        // dd($transactioncount);
         if ($transactioncount > 0) {
             $transaction = Order::with('question')->where('seller_id', Auth::id())->where('slug', $slug)->first();
            // $transaction_question = OrderQuestion::findOrFail($transaction['id']);
             $transaction_question = OrderQuestion::where('order_id',$transaction['id'])->first();
+            $order_conditions = CarCondtion::where('order_id',$transaction['id'])->get();
         } else {
             abort('404');
         }
@@ -358,14 +376,6 @@ class OrdersController extends Controller
                 }
             }
 
-
-//            $fileimages = [];
-//            if ($request->hasFile('images')) {
-//                foreach ($request->images as $image) {
-//                    $fileimages[] = $this->saveImage($image, public_path('assets/uploads/car_images/'));
-//                }
-//                $lastfileimages = implode(',', $fileimages);
-//            }
             DB::beginTransaction();
             $transaction->update([
                 'title' => $data['title'],
@@ -391,6 +401,22 @@ class OrdersController extends Controller
                 "car_board_letters" => $data['car_board_letters'],
                 "car_board_numbers" => $data['car_board_numbers'],
             ]);
+
+            // حذف الإجابات القديمة المخزنة
+            CarCondtion::where('order_id', $transaction_question->order_id)->delete();
+
+            // إدخال الإجابات الجديدة
+            if(isset($data['conditions']) && is_array($data['conditions'])){
+                foreach ($data['conditions'] as $question_id => $option_id) {
+                    CarCondtion::create([
+                        'order_id' => $transaction_question->order_id,
+                        'question_id' => $question_id,
+                        'option_id' => $option_id,
+                    ]);
+                }
+            }
+
+
             DB::commit();
             // إعادة التوجيه إلى الرابط الجديد باستخدام الـ seller_id والـ transaction_slug الجديد
             return redirect()->to('user/transaction/edit/' . $seller_id . '-' . $transaction->slug)
@@ -398,8 +424,8 @@ class OrdersController extends Controller
           //  return $this->success_message(' تم تعديل المعاملة بنجاح  ');
         }
         $marks = TraderMark::all();
-
-        return view('front.users.edit-transaction', compact('transaction', 'marks'));
+        $questions = CarConditionQuestion::with('options')->get();
+        return view('front.users.edit-transaction', compact('transaction', 'marks','questions','order_conditions'));
     }
 
     public function show($seller_id, $slug)

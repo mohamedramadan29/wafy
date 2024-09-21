@@ -26,7 +26,7 @@ Route::controller(UserController::class)->group(function () {
         Route::match(['post', 'get'], 'user/change-password', 'change_password');
         Route::get('user/logout', 'logout');
     });
-
+    Route::get('terms','terms');
 
 });
 Route::controller(OrdersController::class)->group(function () {
@@ -53,6 +53,5 @@ Route::controller(PaymentTransactionsController::class)->group(function (){
     Route::get('payment_success','payment_success')->name('payment.success');
     Route::get('payment_failed','payment_failed')->name('payment.failed');
 });
-
 
 include 'admin.php';
