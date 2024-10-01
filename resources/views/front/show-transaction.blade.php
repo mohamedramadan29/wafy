@@ -79,7 +79,7 @@
 
                                     <div class="add_order">
                                         <form id="CompanyRegister"
-                                              action="{{url('user/transaction/edit/'.$transaction['seller_id'].'-'.$transaction['slug'])}}"
+                                              action="{{url('user/transaction/buyer_start/'.$transaction['seller_id'].'-'.$transaction['slug'])}}"
                                               method="post" enctype="multipart/form-data">
                                             @csrf
                                             <div class="step" id="step1">
@@ -353,6 +353,13 @@
 
                                                 </div>
                                             </div>
+                                            @if(auth()->user())
+                                                <button class="btn btn-primary" type="submit"> بدء عملية الشراء  </button>
+                                            @else
+                                                <a href="{{url('register')}}" class="btn btn-primary btn-lg"> سجل دخولك الان لبداية
+                                                    معاملة جديدة<i class="bi bi-arrow-left"></i> </a>
+                                            @endif
+
                                         </form>
 
                                     </div>

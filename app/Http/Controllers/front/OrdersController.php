@@ -431,15 +431,25 @@ class OrdersController extends Controller
     public function show($seller_id, $slug)
     {
         $marks = TraderMark::all();
-        $transactioncount = Order::with('question')->where('seller_id', Auth::id())->where('slug', $slug)->count();
-        // dd($transactioncount);
-        if ($transactioncount > 0) {
-            $transaction = Order::with('question')->where('seller_id', Auth::id())->where('slug', $slug)->first();
-            // $transaction_question = OrderQuestion::findOrFail($transaction['id']);
-            $transaction_question = OrderQuestion::where('order_id',$transaction['id'])->first();
+        // التحقق من وجود الطلب
+        $transactionExists = Order::where('seller_id', $seller_id)->where('slug', $slug)->exists();
+
+        if ($transactionExists) {
+            // استرجاع الطلب
+            $transaction = Order::with('question')->where('seller_id', $seller_id)->where('slug', $slug)->first();
+
+            if ($transaction) {
+                // استرجاع الأسئلة المرتبطة بالطلب
+                $transaction_question = OrderQuestion::where('order_id', $transaction->id)->first();
+            } else {
+                // عرض صفحة 404 إذا لم يتم العثور على الأسئلة
+                abort(404);
+            }
         } else {
-            abort('404');
+            // عرض صفحة 404 إذا لم يتم العثور على الطلب
+            abort(404);
         }
+
         /////////// Make Notifiction Is Read
         ///
         if (auth()->check()) {
