@@ -9,7 +9,7 @@ use \App\Http\Controllers\admin\InspectionTypeController;
 use \App\Http\Controllers\admin\TransactionController;
 use \App\Http\Controllers\admin\TraderMark;
 use \App\Http\Controllers\admin\CarCondtionQuestionController;
-
+use \App\Http\Controllers\admin\SettingController;
 Route::get('/admin', [AdminController::class, 'index'])->name('login');
 Route::group(['prefix' => 'admin'], function () {
     Route::post('admin_login', [AdminController::class, 'admin_login']);
@@ -87,6 +87,12 @@ Route::group(['prefix' => 'admin'], function () {
           Route::match(['post','get'],'question/store','store');
           Route::match(['post','get'],'question/update/{id}','update');
           Route::post('question/delete/{id}','delete');
+        });
+        ////////////// Website Settings ////////////////
+        ///
+        Route::controller(SettingController::class)->group(function (){
+            Route::get('settings','index');
+            Route::post('setting/update','update');
         });
     });
 });

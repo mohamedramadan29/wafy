@@ -126,6 +126,16 @@
                 <li class="slide">
                     <a class="side-menu__item" data-toggle="slide" href="">
                         <i style="font-size: 22px;margin-left: 10px" class="bx bx-cog"></i>
+                        <span class="side-menu__label"> اعدادات الموقع  </span><i
+                            class="angle fe fe-chevron-down"></i></a>
+                    <ul class="slide-menu">
+                        <li><a class="slide-item" href="{{url('admin/settings')}}">اعدادات الموقع  </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="slide">
+                    <a class="side-menu__item" data-toggle="slide" href="">
+                        <i style="font-size: 22px;margin-left: 10px" class="bx bx-cog"></i>
                         <span class="side-menu__label">  الاعدادات الشخصية </span><i
                                 class="angle fe fe-chevron-down"></i></a>
                     <ul class="slide-menu">
