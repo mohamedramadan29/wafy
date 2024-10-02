@@ -268,11 +268,16 @@
                                                                 <div class="alert alert-info"> من فضلك انتظر اختيار مركز
                                                                     الصيانة من قبل المشتري
                                                                 </div>
-                                                            @elseif($transaction['status'] == 'تم تحديد مركز الصيانة ونوع الفحص')
+                                                            @elseif($transaction['status'] == 'تم تحديد مركز الصيانة ونوع الفحص' && $transaction['buyer_buy'] != 1)
                                                                 <div class="alert alert-info">
                                                                     تم تحديد مركز الفحص ونوع الفحص والسعر
-                                                                    <a href="{{url('transaction_invoice/'.$transaction['seller_id'].'-'.$transaction['slug'])}}" class="btn btn-primary"> مشاهدة التفاصيل
-                                                                        واتمام الدفع </a>
+                                                                    <a href="{{url('transaction_invoice/'.$transaction['seller_id'].'-'.$transaction['slug'])}}" class="btn btn-primary">
+                                                                    اتمام الدفع من جانبك
+                                                                    </a>
+                                                                </div>
+                                                            @elseif($transaction['status'] == 'تم تحديد مركز الصيانة ونوع الفحص' && $transaction['buyer_buy'] == 1)
+                                                                <div class="alert alert-info">
+                                                                    تم الدفع من جابنك بنجاح
                                                                 </div>
                                                             @endif
                                                         @else
@@ -304,14 +309,14 @@
                                                         </div>
                                                         <div>
                                                             @if($transaction['status'] == ' بداية عملية الشراء ')
-                                                                <div class="alert alert-info"> يجب تحديد مركز الصيانة
-                                                                    للفحص
-                                                                </div>
+{{--                                                                <div class="alert alert-info"> يجب تحديد مركز الصيانة--}}
+{{--                                                                    للفحص--}}
+{{--                                                                </div>--}}
                                                             @elseif($transaction['status'] == 'تم تحديد مركز الصيانة ونوع الفحص')
                                                                 <div class="alert alert-info">
-                                                                    تم تحديد مركز الفحص ونوع الفحص والسعر
-                                                                    <a href="{{url('transaction_invoice/'.$transaction['seller_id'].'-'.$transaction['slug'])}}" class="btn btn-primary"> مشاهدة التفاصيل
-                                                                        واتمام الدفع </a>
+                                                                   تم تحديد مركز الفحص وبدء عملية الشراء بنجاح
+{{--                                                                    <a href="{{url('transaction_invoice/'.$transaction['seller_id'].'-'.$transaction['slug'])}}" class="btn btn-primary"> مشاهدة التفاصيل--}}
+{{--                                                                        واتمام الدفع </a>--}}
                                                                 </div>
                                                             @endif
                                                         </div>

@@ -115,6 +115,16 @@
                                                                value="{{$transaction['inspection_price']}}">
                                                     </div>
                                                 </div>
+                                                <div class="row">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" value=""
+                                                               id="flexCheckDefault">
+                                                        <label class="form-check-label" for="flexCheckDefault">
+                                                            الموافقة علي <a href="{{url('terms')}}" target="_blank"> الشروط
+                                                                والاحكام </a>
+                                                        </label>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <button type="submit" class="btn btn-primary">
                                                   اتمام عملية الدفع   <i style="position: relative; top:4px;"

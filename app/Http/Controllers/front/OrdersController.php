@@ -9,6 +9,7 @@ use App\Http\Traits\Upload_Images;
 use App\Models\admin\CarConditionQuestion;
 use App\Models\admin\InsepctionCenter;
 use App\Models\admin\InspectionType;
+use App\Models\admin\Settings;
 use App\Models\admin\TraderMark;
 use App\Models\front\CarCondtion;
 use App\Models\front\Order;
@@ -520,13 +521,14 @@ class OrdersController extends Controller
             if ($validator->fails()) {
                 return Redirect::back()->withInput()->withErrors($validator);
             }
-
             $transaction->update([
                 'inspection_center' => $data['center'],
                 'inspection_type' => $data['inspection_type'],
                 'inspection_price' => $data['price'],
                 'status' => 'تم تحديد مركز الصيانة ونوع الفحص',
             ]);
+
+            return Redirect::to('pay_invoice/'.$transaction_id);
 
             ///////// start Create Invoice
             ///
@@ -568,6 +570,33 @@ class OrdersController extends Controller
             abort('404');
         }
         return view('front.users.transaction_invoice', compact('transaction'));
+    }
+
+    public function select_center_pay($seller_id,$slug)
+    {
+        $setting = Settings::first();
+        $buyer_tax = $setting['buyer_tax'];
+        $centers = InsepctionCenter::where('status', 1)->get();
+        // التحقق من وجود الطلب
+        $transactionExists = Order::where('seller_id', $seller_id)->where('slug', $slug)->exists();
+
+        if ($transactionExists) {
+            // استرجاع الطلب
+            $transaction = Order::with('question')->where('seller_id', $seller_id)->where('slug', $slug)->first();
+
+            if ($transaction) {
+                // استرجاع الأسئلة المرتبطة بالطلب
+                $transaction_question = OrderQuestion::where('order_id', $transaction->id)->first();
+            } else {
+                // عرض صفحة 404 إذا لم يتم العثور على الأسئلة
+                abort(404);
+            }
+        } else {
+            // عرض صفحة 404 إذا لم يتم العثور على الطلب
+            abort(404);
+        }
+
+        return view('front.users.select-center',compact('transaction','centers','buyer_tax'));
     }
 
     public function delete($id)

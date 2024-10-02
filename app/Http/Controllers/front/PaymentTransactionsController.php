@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\front;
 
 use App\Http\Controllers\Controller;
+use App\Models\admin\Settings;
 use App\Models\front\Order;
 use App\Models\front\PaymentTransactions;
 use App\Models\front\TransactionStep;
@@ -15,63 +16,73 @@ class PaymentTransactionsController extends Controller
 {
     public function pay_invoice(Request $request, $id)
     {
-        if ($request->isMethod('post')) {
-            $transaction = Order::findOrFail($id);
+//        if ($request->isMethod('post')) {
+        $setting = Settings::first();
+        $buyer_tax = $setting['buyer_tax'];
+        $transaction = Order::findOrFail($id);
+        if (Auth::id() == $transaction['seller_id']) {
+            $user_type = 'بائع';
             $type_price = $transaction['inspection_price'];
-            $client = new \GuzzleHttp\Client();
-            try {
-                $response = $client->post('https://api.tap.company/v2/charges', [
-                    'json' => [
-                        "amount" => $type_price, // Total amount to charge (in SAR)
-                        "currency" => "SAR",
-                        "threeDSecure" => true,
-                        "save_card" => false,
-                        "description" => " دفع قيمة الفحص  ", // Description of the purchase
-                        "receipt" => [
-                            "email" => true,
-                            "sms" => true
-                        ],
-                        "customer" => [
-                            "first_name" => Auth::user()->name,
-                            "email" => Auth::user()->email,
-                            "phone" => [
-                                "number" => Auth::user()->phone
-                            ]
-                        ],
-                        "source" => [
-                            "id" => "src_all"
-                        ],
-                        "post" => [
-                            "url" => url('pay_invoice/' . $id)
-                        ],
-                        "redirect" => [
-                            "url" => url('pay_invoice/callback/' . $id)
-                        ],
-                        "metadata" => [
-                            "udf1" => "Metadata 1"
+        } else {
+            $user_type = 'مشتري';
+            $type_price = floatval($transaction['inspection_price'] + $buyer_tax);
+
+        }
+
+        $client = new \GuzzleHttp\Client();
+        try {
+            $response = $client->post('https://api.tap.company/v2/charges', [
+                'json' => [
+                    "amount" => $type_price, // Total amount to charge (in SAR)
+                    "currency" => "SAR",
+                    "threeDSecure" => true,
+                    "save_card" => false,
+                    "description" => " دفع قيمة الفحص  ", // Description of the purchase
+                    "receipt" => [
+                        "email" => true,
+                        "sms" => true
+                    ],
+                    "customer" => [
+                        "first_name" => Auth::user()->name,
+                        "email" => Auth::user()->email,
+                        "phone" => [
+                            "number" => Auth::user()->phone
                         ]
                     ],
-                    'headers' => [
-                        "authorization" => "Bearer sk_test_nsgFzA1ulL5432S8YfeENq9U", // Sk Live
-                        'accept' => 'application/json',
-                        'content-type' => 'application/json',
+                    "source" => [
+                        "id" => "src_all"
                     ],
-                ]);
+                    "post" => [
+                        "url" => url('pay_invoice/' . $id)
+                    ],
+                    "redirect" => [
+                        "url" => url('pay_invoice/callback/' . $id)
+                    ],
+                    "metadata" => [
+                        "udf1" => "Metadata 1"
+                    ]
+                ],
+                'headers' => [
+                    "authorization" => "Bearer sk_test_nsgFzA1ulL5432S8YfeENq9U", // Sk Live
+                    'accept' => 'application/json',
+                    'content-type' => 'application/json',
+                ],
+            ]);
 
-                $output = json_decode($response->getBody());
+            $output = json_decode($response->getBody());
 
-                // تأكد من أن URL يحتوي على رابط صالح
-                if (isset($output->transaction->url)) {
-                    // إعادة التوجيه باستخدام طريقة Laravel redirect
-                    return redirect()->away($output->transaction->url);
-                } else {
-                    return back()->withErrors(['error' => 'URL غير موجود في الاستجابة من بوابة الدفع.']);
-                }
-            } catch (\Exception $e) {
-                // في حال حدوث خطأ، يمكن إرجاع المستخدم إلى الصفحة السابقة مع رسالة خطأ
-                return back()->withErrors(['error' => 'حدث خطأ أثناء معالجة الدفع: ' . $e->getMessage()]);
+            // تأكد من أن URL يحتوي على رابط صالح
+            if (isset($output->transaction->url)) {
+                // إعادة التوجيه باستخدام طريقة Laravel redirect
+                return redirect()->away($output->transaction->url);
+            } else {
+                return back()->withErrors(['error' => 'URL غير موجود في الاستجابة من بوابة الدفع.']);
             }
+        } catch (\Exception $e) {
+            // في حال حدوث خطأ، يمكن إرجاع المستخدم إلى الصفحة السابقة مع رسالة خطأ
+            return back()->withErrors(['error' => 'حدث خطأ أثناء معالجة الدفع: ' . $e->getMessage()]);
         }
+//        }
 
     }
 
@@ -83,8 +94,7 @@ class PaymentTransactionsController extends Controller
         $transaction = Order::findOrFail($id);
         if (Auth::id() == $transaction['seller_id']) {
             $user_type = 'بائع';
-        }
-        if (Auth::id() == $transaction['buyer_id']) {
+        } else {
             $user_type = 'مشتري';
         }
 
@@ -129,6 +139,7 @@ class PaymentTransactionsController extends Controller
             if ($user_type == 'مشتري') {
                 $transaction->update([
                     'buyer_buy' => 1,
+                    'buyer_id' => Auth::id(),
                 ]);
             }
             //////// Start Add Step
@@ -145,7 +156,7 @@ class PaymentTransactionsController extends Controller
         } else {
             // الدفع فشل
             // إعادة توجيه إلى صفحة الفشل
-              return redirect()->route('payment.failed')->withErrors(' لم تتم عملية الدفع بنجاح  ');
+            return redirect()->route('payment.failed')->withErrors(' لم تتم عملية الدفع بنجاح  ');
 
         }
     }

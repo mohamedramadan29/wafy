@@ -80,7 +80,7 @@ class UserController extends Controller
                     Auth::logout();
                     return Redirect::back()->withInput()->withErrors('من فضلك يجب تاكيد رقم الهاتف الخاص بك اولا');
                 }
-                return redirect('user/dashboard');
+                return redirect('user/transactions');
             } else {
                 return Redirect::back()->withInput()->withErrors('لا يوجد حساب بهذه البيانات');
             }
@@ -252,7 +252,7 @@ class UserController extends Controller
 
         $types = InspectionType::where('status', 1)->get();
         $transactions = Order::with('seller','buyer')->where('seller_id', Auth::id())->orwhere('buyer_id', Auth::id())->orderby('id', 'DESC')->limit(5)->get();
-        return view('front.users.dashboard', compact('transactions','centers','types'));
+        return view('front.users.transactions', compact('transactions','centers','types'));
     }
     public function logout()
     {

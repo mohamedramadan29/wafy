@@ -354,12 +354,16 @@
                                                 </div>
                                             </div>
                                             @if(auth()->user())
-                                                <button class="btn btn-primary" type="submit"> بدء عملية الشراء  </button>
+                                                @if($transaction['status'] == 'تم تحديد مركز الصيانة ونوع الفحص' && $transaction['buyer_buy'] == 1 && $transaction['buyer_id'] !=null)
+                                               <div class="alert alert-info"> تم شراء السيارة بالفعل  </div>
+                                                @else
+                                                    <a href="{{url('order/select-center/'.$transaction['seller_id'].'-'.$transaction['slug'])}}" class="btn btn-primary btn-lg"> بدء عملية الشراء  <i class="bi bi-arrow-left"></i> </a>
+                                                @endif
+
                                             @else
                                                 <a href="{{url('register')}}" class="btn btn-primary btn-lg"> سجل دخولك الان لبداية
                                                     معاملة جديدة<i class="bi bi-arrow-left"></i> </a>
                                             @endif
-
                                         </form>
 
                                     </div>
