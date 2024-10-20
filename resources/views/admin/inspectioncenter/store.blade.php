@@ -78,12 +78,36 @@
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-md-3">
+                                            <label class="form-label"> كلمة المرور  </label>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <input required type="password" class="form-control" name="password" value="">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-12">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label class="form-label"> تاكيد كلمة المرور  </label>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <input required type="password" class="form-control" name="confirm_password" value="">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-12">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-3">
                                             <label class="form-label"> حالة مركز الصيانة  </label>
                                         </div>
                                         <div class="col-md-9">
                                            <select class="form-control select2" name="status">
                                                <option value=""> -- حدد  الحالة  -- </option>
-                                               <option value="1"> فعال </option>
+                                               <option value="1" selected> فعال </option>
                                                <option value="0"> غير فعال  </option>
                                            </select>
                                         </div>

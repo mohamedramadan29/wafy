@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Traits\Message_Trait;
 use App\Models\admin\InsepctionCenter;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 
@@ -24,10 +25,20 @@ class InspectionCenterController extends Controller
             $rules = [
                 'name'=>'required',
                 'status'=>'required',
+                'password'=>'required',
+                'confirm_password'=>'required|same:password',
+                'phone'=>'required|unique:insepction_centers,phone',
             ];
             $messages = [
                 'name.required'=>' من فضلك ادخل اسم مركز الصيانة  ',
-                'status.required'=>' من فضلك حدد الحالة  '
+                'status.required'=>' من فضلك حدد الحالة  ',
+                'password.required'=>' من فضلك ادخل كلمة المرور',
+                'confirm_password.required'=>'  من فضلك اكد كلمة المرور   ',
+                'confirm_password.same'=>' من فضلك اكد كلمة المرور بشكل صحيح  ',
+                'phone.required'=>' من فضلك ادخل رقم الهاتف  ',
+                'phone.unique'=>' رقم الهاتف متواجد بالفعل من فضلك ادخل رقم هاتف جديد  '
+
+
             ];
             $validator = Validator::make($data,$rules,$messages);
             if($validator->fails()){
@@ -39,6 +50,7 @@ class InspectionCenterController extends Controller
                 'phone'=>$data['phone'],
                 'address'=>$data['address'],
                 'status'=>$data['status'],
+                'password'=>Hash::make($data['password']),
             ]);
             return $this->success_message(' تم اضافة مركز الصيانة بنجاح  ');
         }
@@ -52,10 +64,20 @@ class InspectionCenterController extends Controller
             $rules = [
                 'name'=>'required',
                 'status'=>'required',
+                'phone'=>'required|unique:insepction_centers,phone,'.$center['id'],
             ];
+            if (isset($data['password']) && $data['password'] != '') {
+                $rules['password'] = 'required';
+                $rules['confirm_password'] = 'required|same:password';
+            }
             $messages = [
                 'name.required'=>' من فضلك ادخل اسم مركز الصيانة  ',
-                'status.required'=>' من فضلك حدد الحالة  '
+                'status.required'=>' من فضلك حدد الحالة  ',
+                'phone.required' => 'من فضلك ادخل رقم الهاتف',
+                'phone.unique' => 'رقم الهاتف مسجل بالفعل',
+                'password.required' => 'من فضلك ادخل كلمة المرور',
+                'confirm_password.required' => 'من فضلك اكد كلمة المرور',
+                'confirm_password.same' => 'من فضلك اكد كلمة المرور بشكل صحيح',
             ];
             $validator = Validator::make($data,$rules,$messages);
             if($validator->fails()){
@@ -67,6 +89,11 @@ class InspectionCenterController extends Controller
                 'address'=>$data['address'],
                 'status'=>$data['status'],
             ]);
+            if (isset($data['password']) && $data['password'] !=''){
+                $center->update([
+                    'password'=> Hash::make($data['password']),
+                ]);
+            }
             return $this->success_message(' تم تعديل مركز الصيانة بنجاح  ');
         }
         return view('admin.inspectioncenter.update',compact('center'));

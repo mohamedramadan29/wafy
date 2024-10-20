@@ -82,19 +82,48 @@
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-md-3">
+                                            <label class="form-label">  تعديل كلمة المرور  </label>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <input type="password" class="form-control" name="password"
+                                                   value="">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-12">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label class="form-label"> تاكيد كلمة المرور </label>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <input type="password" class="form-control" name="confirm_password"
+                                                   value="">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-12">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-3">
                                             <label class="form-label"> حالة مركز الصيانة </label>
                                         </div>
                                         <div class="col-md-9">
                                             <select class="form-control select2" name="status">
                                                 <option value=""> -- حدد الحالة --</option>
-                                                <option @if($center['status'] == 1) selected @endif value="1"> فعال</option>
-                                                <option @if($center['status'] == 0) selected @endif value="0"> غير فعال</option>
+                                                <option @if($center['status'] == 1) selected @endif value="1"> فعال
+                                                </option>
+                                                <option @if($center['status'] == 0) selected @endif value="0"> غير
+                                                    فعال
+                                                </option>
                                             </select>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <button class='btn btn-primary' type='submit'>  تعديل مركز الصيانة  <i class="fa fa-plus"></i>
+                            <button class='btn btn-primary' type='submit'> تعديل مركز الصيانة <i class="fa fa-plus"></i>
                             </button>
                         </div>
                     </form>
