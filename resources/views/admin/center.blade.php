@@ -1,5 +1,5 @@
 @extends('admin.layouts.master2')
-@section('title') تسجيل الدخول  @endsection
+@section('title') تسجيل دخول مراكز الصيانة  @endsection
 @section('css')
     <!-- Sidemenu-respoansive-tabs css -->
     <link href="{{URL::asset('assets/admin/plugins/sidemenu-responsive-tabs/css/sidemenu-responsive-tabs.css')}}" rel="stylesheet">
@@ -30,30 +30,30 @@
                                                 <div class="alert alert-danger"> {{\Illuminate\Support\Facades\Session::get('Error_Message')}} </div>
                                             @endif
 
-                                                @if ($errors->any())
-                                                    <div class="alert alert-danger">
-                                                        <ul>
-                                                            @foreach ($errors->all() as $error)
-                                                                <li>{{ $error }}</li>
-                                                            @endforeach
-                                                        </ul>
-                                                    </div>
-                                                @endif
-                                            <h2>مرحبا!</h2>
+                                            @if ($errors->any())
+                                                <div class="alert alert-danger">
+                                                    <ul>
+                                                        @foreach ($errors->all() as $error)
+                                                            <li>{{ $error }}</li>
+                                                        @endforeach
+                                                    </ul>
+                                                </div>
+                                            @endif
+                                            <h2>  تسجيل دخول مراكز الصيانة </h2>
                                             <h5 class="font-weight-semibold mb-4"> من فضلك سجل دخولك  </h5>
-                                            <form action="{{url('admin/admin_login')}}" method="post">
+                                            <form action="{{url('center')}}" method="post">
                                                 @csrf
                                                 <div class="form-group">
-                                                    <label>البريد الالكتروني </label> <input class="form-control" name="email"   type="email" required>
+                                                    <label> رقم الهاتف  </label> <input class="form-control" name="phone" type="text" required>
                                                 </div>
                                                 <div class="form-group">
                                                     <label>كلمه المرور</label> <input class="form-control" name="password"  type="password" required>
                                                 </div><button class="btn btn-main-primary btn-block">تسجيل الدخول</button>
                                             </form>
-                                                <div class="main-signin-footer mt-5">
-{{--                                                    <p><a href="{{url('admin/register')}}"> اضافه حساب جديد !  </a></p>--}}
-{{--                                                    <p><a href="">نسيت كلمة المرور?</a></p>--}}
-                                                </div>
+                                            <div class="main-signin-footer mt-5">
+                                                {{--                                                    <p><a href="{{url('admin/register')}}"> اضافه حساب جديد !  </a></p>--}}
+                                                {{--                                                    <p><a href="">نسيت كلمة المرور?</a></p>--}}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

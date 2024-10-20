@@ -7,6 +7,7 @@ use App\Http\Traits\Message_Trait;
 use App\Models\admin\InsepctionCenter;
 use App\Models\admin\InspectionType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 
@@ -17,7 +18,16 @@ class InspectionTypeController extends Controller
 
     public function index($centerid)
     {
-        $center = InsepctionCenter::findOrFail($centerid);
+        if (Auth::guard('center')->check()){
+
+            $center = Auth::guard('center')->user();
+            if (Auth::guard('center')->id() != $centerid){
+                abort(404);
+            }
+        }elseif (Auth::check()){
+            $center = InsepctionCenter::findOrFail($centerid);
+        }
+
         $types = InspectionType::where('center_id',$centerid)->get();
         return view('admin.inspectiontype.index',compact('types','center'));
     }

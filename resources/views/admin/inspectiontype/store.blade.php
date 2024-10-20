@@ -7,12 +7,18 @@
                         type="button"><span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form method="post"
-                  action="{{url('admin/inspection-type/store')}}">
-                @csrf
-                <div class="modal-body">
-                    <div>
-                        <input type="hidden" name="center_id" value="{{$center['id']}}">
+            @if(\Illuminate\Support\Facades\Auth::guard('center')->check())
+                <form method="post"
+                      action="{{url('center/inspection-type/store')}}">
+                    @elseif(\Illuminate\Support\Facades\Auth::check())
+                        <form method="post"
+                              action="{{url('admin/inspection-type/store')}}">
+                            @endif
+
+                            @csrf
+                            <div class="modal-body">
+                                <div>
+                                    <input type="hidden" name="center_id" value="{{$center['id']}}">
                         <label for=""> اسم الفحص  </label>
                         <input class="form-control" type="text" name="name" required>
                     </div>

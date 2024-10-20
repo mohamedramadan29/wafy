@@ -40,6 +40,10 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'center' => [
+            'driver' => 'session',
+            'provider' => 'centers',
+        ],
     ],
 
     /*
@@ -63,6 +67,10 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
+        ],
+        'centers' => [
+            'driver' => 'eloquent',
+            'model' => \App\Models\admin\InsepctionCenter::class,
         ],
 
         // 'users' => [

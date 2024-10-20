@@ -4,6 +4,8 @@ namespace App\Models\front;
 
 use App\Models\admin\InsepctionCenter;
 use App\Models\admin\InspectionType;
+use App\Models\admin\TraderMark;
+use App\Models\admin\TransactionResult;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -37,4 +39,11 @@ class Order extends Model
     {
         return $this->belongsTo(InspectionType::class,'inspection_type');
     }
+
+
+    public function TransactionResult()
+    {
+        return $this->hasMany(TransactionResult::class,'transaction_id');
+    }
+
 }

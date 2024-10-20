@@ -14,4 +14,11 @@ class CarConditionQuestion extends Model
     {
         return $this->hasMany(CarConditionOption::class,'question_id');
     }
+
+    public function questionmark()
+    {
+        return $this->belongsTo(TraderMark::class,'car_mark');
+    }
+
+
 }

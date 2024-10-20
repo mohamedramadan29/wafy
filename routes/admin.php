@@ -96,3 +96,25 @@ Route::group(['prefix' => 'admin'], function () {
         });
     });
 });
+
+
+Route::match(['post','get'],'center',[InspectionCenterController::class,'login']);
+
+Route::group(['prefix'=>'center'],function (){
+    Route::group(['middleware'=>'center'],function (){
+        Route::controller(InspectionCenterController::class)->group(function (){
+            Route::get('dashboard','center_dashboard');
+        });
+        Route::controller(TransactionController::class)->group(function (){
+            Route::get('transactions','center_transaction');
+            Route::match(['post','get'],'results/{id}','results');
+            Route::post('results/delete/{id}','delete_result');
+        });
+        Route::controller(InspectionTypeController::class)->group(function () {
+            Route::get('inspection-type/{centerid}', 'index');
+            Route::match(['post', 'get'], 'inspection-type/store', 'store');
+            Route::match(['post', 'get'], 'inspection-type/update/{id}', 'update');
+            Route::post('inspection-type/delete/{id}', 'delete');
+        });
+    });
+});

@@ -1,24 +1,17 @@
-<div class="modal" id="delete_model_{{$type['id']}}">
+<div class="modal" id="delete_model_{{$result['id']}}">
     <div class="modal-dialog" role="document">
         <div class="modal-content modal-content-demo">
             <div class="modal-header">
-                <h6 class="modal-title"> هل انت متاكد من حذف  نوع الفحص   </h6>
+                <h6 class="modal-title"> هل انت متاكد من حذف   الملف   </h6>
                 <button aria-label="Close" class="close" data-dismiss="modal"
                         type="button"><span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            @if(Auth::guard('center')->check())
-                <form method="post"
-                      action="{{url('center/inspection-type/delete/'.$type['id'])}}">
-            @elseif(Auth::check())
-                <form method="post"
-                      action="{{url('admin/inspection-type/delete/'.$type['id'])}}">
-            @endif
-
+            <form method="post"
+                  action="{{url('center/results/delete/'.$result['id'])}}">
                 @csrf
                 <div class="modal-body">
-                    <input class="form-control" type="text" readonly
-                           value="{{$type['name']}}">
+
                 </div>
                 <div class="modal-footer">
                     <button class="btn ripple btn-danger" type="submit"> حذف

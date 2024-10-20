@@ -268,7 +268,7 @@
                                                                 <div class="alert alert-info"> من فضلك انتظر اختيار مركز
                                                                     الصيانة من قبل المشتري
                                                                 </div>
-                                                            @elseif($transaction['status'] == 'تم تحديد مركز الصيانة ونوع الفحص' && $transaction['buyer_buy'] != 1)
+                                                            @elseif($transaction['status'] == 'تم تحديد مركز الصيانة ونوع الفحص' && $transaction['seller_buy'] != 1)
                                                                 <div class="alert alert-info">
                                                                     تم تحديد مركز الفحص ونوع الفحص والسعر
                                                                     <a href="{{url('transaction_invoice/'.$transaction['seller_id'].'-'.$transaction['slug'])}}" class="btn btn-primary">
@@ -278,6 +278,7 @@
                                                             @elseif($transaction['status'] == 'تم تحديد مركز الصيانة ونوع الفحص' && $transaction['buyer_buy'] == 1)
                                                                 <div class="alert alert-info">
                                                                     تم الدفع من جابنك بنجاح
+                                                                    <a href="{{url('transaction/result/'.$transaction['id'])}}" class="btn btn-warning btn-sm"> مشاهدة نتائج الفحص </a>
                                                                 </div>
                                                             @endif
                                                         @else
@@ -317,6 +318,7 @@
                                                                    تم تحديد مركز الفحص وبدء عملية الشراء بنجاح
 {{--                                                                    <a href="{{url('transaction_invoice/'.$transaction['seller_id'].'-'.$transaction['slug'])}}" class="btn btn-primary"> مشاهدة التفاصيل--}}
 {{--                                                                        واتمام الدفع </a>--}}
+                                                                    <a href="{{url('transaction/result/'.$transaction['id'])}}" class="btn btn-warning btn-sm"> مشاهدة نتائج الفحص </a>
                                                                 </div>
                                                             @endif
                                                         </div>

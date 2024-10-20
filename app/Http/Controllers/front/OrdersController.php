@@ -605,4 +605,11 @@ class OrdersController extends Controller
         $transaction->delete();
         return $this->success_message(' تم حذف المعاملة بنجاح  ');
     }
+
+
+    public function result($id)
+    {
+        $transaction = Order::with('TransactionResult')->findOrFail($id);
+        return view('front.users.results',compact('transaction'));
+    }
 }

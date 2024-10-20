@@ -42,6 +42,7 @@ Route::controller(OrdersController::class)->group(function () {
         Route::match(['post','get'],'transaction_invoice/{seller_id}-{transaction_slug}','transaction_invoice');
         Route::get('/get-types/{markId}','getTypes');
         Route::get('order/select-center/{seller_id}-{transaction_slug}','select_center_pay');
+        Route::get('transaction/result/{id}','result');
     });
     Route::get('transaction/{seller_id}-{slug}', 'show');
 });

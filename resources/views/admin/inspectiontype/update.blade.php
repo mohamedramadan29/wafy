@@ -7,8 +7,14 @@
                         type="button"><span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form method="post"
-                  action="{{url('admin/inspection-type/update/'.$type['id'])}}">
+            @if(Auth::guard('center')->check())
+                <form method="post"
+                      action="{{url('center/inspection-type/update/'.$type['id'])}}">
+            @elseif(Auth::check())
+                <form method="post"
+                      action="{{url('admin/inspection-type/update/'.$type['id'])}}">
+            @endif
+
                 @csrf
                 <div class="modal-body">
                     <div>

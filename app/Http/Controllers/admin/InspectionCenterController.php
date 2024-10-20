@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Traits\Message_Trait;
 use App\Models\admin\InsepctionCenter;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
@@ -13,6 +14,45 @@ use Illuminate\Support\Facades\Validator;
 class InspectionCenterController extends Controller
 {
     use Message_Trait;
+
+    public function login(Request $request)
+    {
+        if ($request->isMethod('post')){
+            $data_lgoin = $request->all();
+            try {
+                $rules = [
+                    'phone' => 'required',
+                    'password' => 'required',
+                ];
+                $customMessage = [
+                    'phone.required' => 'من فضلك ادخل رقم الهاتف',
+                    'password.required' => 'من فضلك ادخل كلمة المرور',
+                ];
+                $this->validate($request, $rules, $customMessage);
+                $phone = $data_lgoin['phone'];
+                $password = $data_lgoin['password'];
+                if (Auth::guard('center')->attempt(['phone' => $phone, 'password' => $password])) {
+                    $user = Auth::guard('center')->user();
+                   //  dd($user);
+                    if (Auth::guard('center')->user()->status == 1) {
+                        return redirect('center/dashboard');
+                    } else {
+                        return $this->Error_message('غير مصرح لك بالدخول كمركز صيانة ');
+                    }
+                } else {
+                    return $this->Error_message('لا يوجد سجل بهذة البيانات ');
+                }
+
+            } catch (\Exception $e) {
+                return $this->exception_message($e);
+            }
+        }
+        return view('admin.center');
+    }
+    public function center_dashboard()
+    {
+        return view('admin.center.dashboard');
+    }
     public function index()
     {
         $centers = InsepctionCenter::all();
