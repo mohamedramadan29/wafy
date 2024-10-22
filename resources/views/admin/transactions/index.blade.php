@@ -66,6 +66,7 @@
                                         <th class="wd-15p border-bottom-0"> المشتري</th>
                                         <th class="wd-15p border-bottom-0"> السعر</th>
                                         <th class="wd-15p border-bottom-0"> الحالة</th>
+                                        <th class="wd-15p border-bottom-0"> الحالة النهائية للعملية  </th>
                                         <th class="wd-15p border-bottom-0"> العمليات</th>
                                     </tr>
                                 @endif
@@ -114,12 +115,15 @@
                                                 <span class="badge badge-warning"> {{$transaction['status']}} </span>
                                             </td>
                                             <td>
+                                                <span class="badge badge-danger"> {{$transaction['admin_last_status']}} </span>
+                                            </td>
+                                            <td>
                                                 <a href="{{url('admin/transaction/show/'.$transaction['id'])}}"
                                                    class="btn btn-primary btn-sm"> <i class="fa fa-edit"></i> مشاهدة
                                                     جميع المعلومات </a>
-                                                <a href="{{url('admin/transaction/steps/'.$transaction['id'])}}"
-                                                   class="btn btn-warning btn-sm"> <i class="fa fa-eye"></i> مشاهدة
-                                                    خطوات العملية </a>
+{{--                                                <a href="{{url('admin/transaction/steps/'.$transaction['id'])}}"--}}
+{{--                                                   class="btn btn-warning btn-sm"> <i class="fa fa-eye"></i> مشاهدة--}}
+{{--                                                    خطوات العملية </a>--}}
                                                 {{--                                            <button data-target="#delete_model_{{$center['id']}}"--}}
                                                 {{--                                                    data-toggle="modal" class="btn btn-danger btn-sm">  <i--}}
                                                 {{--                                                    class="fa fa-trash"></i>--}}

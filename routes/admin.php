@@ -62,7 +62,7 @@ Route::group(['prefix' => 'admin'], function () {
         ///
         Route::controller(TransactionController::class)->group(function () {
             Route::get('transactions', 'index');
-            Route::get('transaction/show/{id}', 'show');
+            Route::match(['post','get'],'transaction/show/{id}', 'show');
             Route::match(['post', 'get'], 'transaction/update/{id}', 'update');
             Route::get('transaction/steps', 'steps');
         });

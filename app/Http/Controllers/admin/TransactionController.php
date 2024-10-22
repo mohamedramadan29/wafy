@@ -22,9 +22,17 @@ class TransactionController extends Controller
         return view('admin.transactions.index', compact('transactions'));
     }
 
-    public function show($id)
+    public function show(Request  $request,$id)
     {
-        $transaction = Order::with('seller', 'buyer', 'question')->where('id', $id)->first();
+        $transaction = Order::with('seller', 'buyer', 'question','TransactionResult')->where('id', $id)->first();
+        if ($request->isMethod('post')){
+            $data = $request->all();
+            $transaction->update([
+                'admin_last_status'=>$data['admin_last_status'],
+            ]);
+            return $this->success_message(' تم تحديد الحالة النهائية للعملية بنجاح  ');
+        }
+
         return view('admin.transactions.show', compact('transaction'));
     }
 

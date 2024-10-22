@@ -44,7 +44,7 @@
                         </div>
                     @endif
                     <form id="multiStepForm"
-                          action=""
+                          action="{{url('admin/transaction/show/'.$transaction['id'])}}"
                           method="post" enctype="multipart/form-data">
                         @csrf
                         <div class="step" id="step1">
@@ -82,7 +82,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-lg-12 col-12">
-                                    <label for="description">  صور السيارة
+                                    <label for="description"> صور السيارة
                                     </label>
                                     <div class="car_images">
                                         @php $car_images = explode(',',$transaction['images']);
@@ -267,6 +267,55 @@
                                 </div>
                             </div>
                         </div>
+                        <br>
+                        <br>
+
+                        <h6> نتائج الفحص </h6>
+                        @if($transaction['TransactionResult']->count() > 0 )
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th> الملف</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    @foreach($transaction['TransactionResult'] as $result)
+                                        <tr>
+                                            <td><a target="_blank" class="btn btn-primary btn-sm"
+                                                   href="{{asset('assets/uploads/results/'.$result['file'])}}"> مشاهدة
+                                                    الملف </a></td>
+
+                                        </tr>
+                                        @include('admin.transactions.delete_result')
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        @endif
+
+                        <div class="row">
+                            <div class="col-lg-12 col-12">
+
+                                <label for="tire_condition"> تحديد الحالة النهائية للعملية <span
+                                        class="star"> *  </span>
+                                </label>
+                                <select name="admin_last_status" id="" class="form-control">
+                                    <option value="" selected disabled> -- حدد --</option>
+                                    <option @if($transaction['admin_last_status'] == 'متوافق') selected @endif value="متوافق"> متوافق</option>
+                                    <option @if($transaction['admin_last_status'] == 'غير متوافق') selected @endif value="غير متوافق"> غير متوافق</option>
+                                </select>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-lg-12 col-12">
+                                <button type="submit" class="btn btn-primary"> تعديل الحالة النهائية للمعاملة</button>
+                            </div>
+
+                        </div>
+
+
                     </form>
 
                 </div>
