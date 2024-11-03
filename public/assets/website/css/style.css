@@ -36,61 +36,6 @@ body {
     font-weight: 500
 }
 
-.footer {
-    background-color: #fff;
-    text-align: center;
-    margin: 0;
-    border-top: 1px solid #e4e3e3;
-}
-
-.footer .data {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-@media (max-width: 991px) {
-    .footer .data {
-        flex-direction: column-reverse;
-    }
-}
-
-.footer .data ul {
-    padding-top: 10px;
-}
-
-.footer .data ul li {
-    display: inline-block;
-    border-radius: 50%;
-    border: 2px solid #fff;
-    width: 30px;
-    height: 30px;
-    line-height: 30px;
-    background: #fff
-}
-
-.footer .data ul li i {
-    color: #6c706f;
-    font-size: 17px
-}
-
-.footer .data p {
-    color: #a09c9c;
-    margin: 0;
-    padding: 0;
-    font-size: 12px;
-
-}
-
-.footer .data p a {
-    text-decoration: none;
-    color: #fff;
-    font-weight: bold;
-}
-
-.footer .data p a i {
-    color: #c0392b;
-}
 
 .navbar-toggler {
     color: #4b4848;
@@ -222,7 +167,7 @@ header {
     height: 100vh;
     background: #ffff;
     position: absolute;
-    top: -60px;
+    top: -80px;
     right: -100%;
     width: 300px;
 }
@@ -523,7 +468,8 @@ body.overlay-active {
     }
 
     .nav-link {
-        font-size: 13px;
+        font-size: 17px;
+        padding-right: 15px;
     }
 }
 
@@ -605,11 +551,30 @@ body.overlay-active {
     line-height: 1.5;
     font-size: 50px;
     font-weight: bold;
+    margin-bottom: 20px;
+}
+.hero p{
     margin-bottom: 40px;
-
+    font-size: 20px;
+    font-weight: bold;
+    color:#484848;
 }
 
-.hero .user_type {
+/**************** End Hero Section ************/
+
+/************* start Seller Buyer Section *********/
+.buttons_data{
+    background-color:#ECF2F5;
+    padding-top :40px;
+}
+.buttons_data h2{
+    margin-top: 20px;
+    font-size: 35px;
+    font-weight: bold;
+    margin-bottom: 40px;
+    text-align: center;
+}
+.user_type {
     display: flex;
     justify-content: center;
     background: #fff;
@@ -617,35 +582,32 @@ body.overlay-active {
     text-align: center;
     margin: auto;
     align-items: center;
-}
-
-.hero .user_type .active {
 
 }
 
-.hero .user_type .seller {
+.user_type .active {
+
+}
+
+ .user_type .seller {
     padding: 20px;
     width: 50%;
     font-size: 25px;
     cursor: pointer;
 }
 
-.hero .user_type .buyer {
+.user_type .buyer {
     padding: 20px;
     width: 50%;
     font-size: 25px;
     cursor: pointer;
 }
 
-.hero .user_type .active {
+.user_type .active {
     background-color: var(--main-color);
     color: #fff;
     transition: all .3s linear;
 }
-
-/**************** End Hero Section ************/
-
-/************* start Seller Buyer Section *********/
 
 .about_seller_buyer {
     padding-top: 40px;
@@ -654,6 +616,7 @@ body.overlay-active {
 
 .about_seller_buyer.active {
     display: block;
+    background-color:#ECF2F5;
 }
 
 .about_seller_buyer .data {
@@ -693,8 +656,69 @@ body.overlay-active {
     max-width: 100%
 }
 
+.about_seller_buyer .data .info ul{}
+.about_seller_buyer .data .info ul li{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.about_seller_buyer .data .info ul li img{
+    width: 20px;
+}
+.about_seller_buyer .data .info ul li strong{}
+
 /************** End Seller Buyer Section **********/
 
+
+/*************** Start About Us ***************/
+
+
+.about_us {
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+
+.about_us .data {
+}
+
+.about_us .data .info {
+}
+
+.about_us .data .info h4 {
+    margin-top: 20px;
+    font-size: 35px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.about_us .data .info p {
+    font-size: 20px;
+    color: #5e5555;
+}
+
+.global_button {
+    padding: 13px 65px;
+    font-size: 20px;
+}
+
+.about_us .data .info .global_button i {
+    position: relative;
+    top: 4px;
+    margin-right: 5px;
+
+}
+
+.about_us .image {
+    text-align: left;
+
+}
+
+.about_us .image img {
+    max-width: 70%
+}
+
+
+/********************* End About Us *************/
 
 /**************** Start Login Page *************/
 
@@ -900,6 +924,7 @@ form .box textarea{
     width: 110px;
     height: 110px;
     border-radius: 10px;
+    border:1px solid #ccc;
 }
 .all_transations .transaction .transaction_info {
     width: 70%;
@@ -979,3 +1004,208 @@ form .car_images img{
     background-repeat: no-repeat;
 }
 
+/************************** Start Faq Section *************/
+
+.faq{
+    background-color: #ecf2f5;
+    padding: 40px 0;
+}
+
+.faq h4{
+    margin-top: 20px;
+    font-size: 35px;
+    font-weight: bold;
+    margin-bottom: 40px;
+    text-align: center;
+}
+.faq .accordion-item:first-of-type .accordion-button{
+background-color: #3298e9;
+    color:#fff;
+}
+.faq .accordion-button:not(.collapsed){
+    background-color: #3298e9;
+    color:#fff;
+    outline: none;
+    box-shadow: none;
+}
+.faq .accordion-body{
+    background-color:#ecf2f5;
+}
+.faq .accordion-button{
+    outline: none;
+    box-shadow: none;
+}
+/**************************** End Faq Section **************/
+/*********************** Start Our Goals *******************/
+.our_goals{
+
+}
+.our_goals .data .info ul{}
+.our_goals .data .info ul li{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.our_goals .data .info ul li img{
+    width: 20px;
+}
+/********************** End Our Goals *************************/
+/*********************** Start Footer **************************/
+
+.footer{
+    background-color:#3298e9;
+    color:#fff;
+    padding-top: 30px;
+
+}
+
+.footer .data .info{}
+.footer .data .info p{
+    color:#fff;
+}
+.footer .data .info ul{}
+.footer .data .info ul li {
+    display: inline-block;
+    margin-right:15px;
+    margin-left: 15px;
+}
+.footer .data .info ul a{
+    text-decoration: none;
+    color:#fff;
+}
+.footer .data .info .icons{}
+.footer .data .info .icons li {}
+.footer .data .info .icons a{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #fff;
+    display: inline-block;
+    line-height: 47px;
+    text-align: center;
+}
+.footer .data .info .icons a i {
+    color: #3298e9;
+    font-size: 22px;
+}
+/************************ End Footer ***************************/
+@media(max-width: 991px){
+    .hero h3{
+        font-size: 35px;
+    }
+    .about_us .data .info p{
+        font-size:18px;
+        line-height: 2;
+    }
+    .about_us .image{
+        text-align: center;
+        margin-top: 30px;
+    }
+    .buttons_data h2,
+    .about_seller_buyer .data .info h4,
+    .about_us .data .info h4,
+    .faq h4{
+        font-size: 25px;
+    }
+    .user_type{
+        width: 100%;
+    }
+    .about_seller_buyer .data .info ul li{
+        line-height: 2;
+    }
+    .footer .data .info p{
+        text-align: center;
+    }
+    .footer .data .info{
+        text-align: center;
+    }
+    .account_type{
+        width: 100%;
+    }
+    .account_type .seller,
+    .account_type .buyer{
+        font-size:17px
+    }
+    #code-input, #code-input2{
+        justify-content: center !important;
+        max-width: 90% !important;
+    }
+    .code-digit2, .code-digit{
+        width: 40px !important;
+        height: 40px !important;
+    }
+    .global_button{
+        padding: 10px 40px;
+        font-size: 17px;
+    }
+
+    /************************ Start Account Pages *********************/
+    .select_options_category label{
+        padding-right: 20px;
+        padding-left: 20px;
+    }
+    .image-upload-wrapper{
+        width:110px;
+        height:110px;
+    }
+    .box label{
+        font-size: 16px;
+    }
+    .all_transations .transaction{
+        flex-direction: column;
+    }
+    .all_transations .transaction .transaction_info{
+        width: 100%;
+        margin-top:20px;
+    }
+
+    .all_transations .transaction .transaction_info .actions a{
+        margin-bottom: 10px;
+    }
+    .all_transations .transaction .other_person{
+        width:100%
+    }
+    .nav-item .dropdown-toggle .bi-bell-fill{
+        color:#212529;
+        position: relative;
+        top: -15px;
+    }
+    .dropdown .counter{
+        top:-30px;
+        text-align: center;
+    }
+    .top_header .top2 ul li a{
+        color:#000;
+    }
+    .navbar_user_image{
+
+    }
+    .navbar_user_image img{
+        width:40px;
+        height:40px;
+        border-radius: 50%;
+    }
+    .navbar_user_image button{
+        background-color:transparent;
+        border: none;
+    }
+    .navbar_user_image .btn:hover,
+    .navbar_user_image .btn.show{
+        background-color:transparent;
+    }
+    .top_header .top2 .navbar_user_image ul li{
+        display: block;
+    }
+    .main_dashboard_sidebar .start_order{
+        display: none;
+    }
+
+
+    .nav-item .mobile_login_button{
+        background: var(--main-color);
+        color: #fff;
+        padding: 5px;
+        border-radius: 5px;
+        margin-left: 20px;
+    }
+    /********************** End Account Pages *************************/
+}

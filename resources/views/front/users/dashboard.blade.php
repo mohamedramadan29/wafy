@@ -75,12 +75,8 @@
                                     @if(count($transactions)> 0)
                                         @foreach($transactions as $index => $transaction  )
                                             <div class="transaction">
-                                                @php
-                                                    $car_images = explode(',',$transaction['images']);
-                                                    $first_image = $car_images[0];
-                                                @endphp
                                                 <div class="car_image">
-                                                    <img src="{{asset('assets/uploads/car_images/'.$first_image)}}"
+                                                    <img src="{{ asset('assets/uploads/car_images/'.$transaction['front_image']) }}"
                                                          alt="">
                                                 </div>
                                                 <div class="transaction_info">
@@ -90,12 +86,12 @@
                                                             </div>
                                                         @elseif($transaction['buyer_id'] == Auth::id())
                                                             <div><span
-                                                                    class="badge badge-success bg-warning"> شراء </span>
+                                                                        class="badge badge-success bg-warning"> شراء </span>
                                                             </div>
                                                         @endif
 
                                                         <div><span
-                                                                class="badge badge-success bg-danger">  {{$transaction['status']}}   </span>
+                                                                    class="badge badge-success bg-danger">  {{$transaction['status']}}   </span>
                                                         </div>
                                                     </div>
                                                     <h4>  {{ $transaction['title'] }}  </h4>
@@ -140,29 +136,29 @@
                                                         <div class="actions">
                                                             <a href="{{url('transaction/'.$transaction['seller_id'].'-'.$transaction['slug'])}}"
                                                                class="btn btn-warning btn-sm"> كامل التفاصيل <i
-                                                                    class="bi bi-eye"></i> </a>
+                                                                        class="bi bi-eye"></i> </a>
                                                             @if($transaction['status'] =='بداية المعاملة ')
                                                                 <a href="{{url('user/transaction/edit/'.$transaction['seller_id'].'-'.$transaction['slug'])}}"
                                                                    class="btn btn-primary btn-sm"> تعديل المعاملة <i
-                                                                        class="bi bi-pencil-square"></i> </a>
+                                                                            class="bi bi-pencil-square"></i> </a>
                                                                 <a onclick="return confirm(' هل انت متاكد من حذف المعاملة !! ')"
                                                                    href="{{url('user/transaction/delete/'.$transaction['id'])}}"
                                                                    class="btn btn-danger btn-sm"> حذف المعاملة <i
-                                                                        class="bi bi-archive-fill"></i> </a>
+                                                                            class="bi bi-archive-fill"></i> </a>
                                                             @endif
                                                         </div>
                                                     @else
                                                         <div class="actions">
                                                             <a href="{{url('transaction/'.$transaction['seller_id'].'-'.$transaction['slug'])}}"
                                                                class="btn btn-warning btn-sm"> كامل التفاصيل <i
-                                                                    class="bi bi-eye"></i> </a>
+                                                                        class="bi bi-eye"></i> </a>
                                                             @if($transaction['status'] == ' بداية عملية الشراء ')
                                                                 <button type="button" class="btn btn-primary btn-sm"
                                                                         data-bs-toggle="modal"
                                                                         data-bs-target="#selectcenter_{{$transaction['id']}}">
                                                                     تحديد مركز الصيانة
                                                                     ونوع الفحص <i
-                                                                        class="bi bi-eye"></i>
+                                                                            class="bi bi-eye"></i>
                                                                 </button>
 
                                                                 <!-- Modal -->
@@ -182,8 +178,8 @@
                                                                                         aria-label="Close"></button>
                                                                             </div>
                                                                             <form
-                                                                                action="{{url('transaction/selectcenter/'.$transaction['id'])}}"
-                                                                                method="post" autocomplete="off">
+                                                                                    action="{{url('transaction/selectcenter/'.$transaction['id'])}}"
+                                                                                    method="post" autocomplete="off">
                                                                                 @csrf
 
                                                                                 <div class="modal-body">
@@ -198,7 +194,7 @@
                                                                                             </option>
                                                                                             @foreach($centers as $center)
                                                                                                 <option
-                                                                                                    value="{{$center['id']}}">{{$center['name']}}</option>
+                                                                                                        value="{{$center['id']}}">{{$center['name']}}</option>
                                                                                             @endforeach
                                                                                         </select>
                                                                                     </div>
@@ -217,7 +213,7 @@
                                                                                     <div class="box">
                                                                                         <label for="type_price"> سعر
                                                                                             الفحص <span
-                                                                                                class="badge badge-danger bg-danger"> ريال  </span>
+                                                                                                    class="badge badge-danger bg-danger"> ريال  </span>
                                                                                         </label>
                                                                                         <input name="price" required
                                                                                                class="form-control"
@@ -256,12 +252,12 @@
                                                                 <div class="image">
                                                                     @if($transaction['buyer']['image'] !='')
                                                                         <img
-                                                                            src="{{asset('assets/uploads/user_images/'.$transaction['buyer']['image'])}}"
-                                                                            alt="">
+                                                                                src="{{asset('assets/uploads/user_images/'.$transaction['buyer']['image'])}}"
+                                                                                alt="">
                                                                     @else
                                                                         <img
-                                                                            src="{{asset('assets/uploads/user_images/user_avatar.png')}}"
-                                                                            alt="">
+                                                                                src="{{asset('assets/uploads/user_images/user_avatar.png')}}"
+                                                                                alt="">
                                                                     @endif
                                                                 </div>
                                                                 <div class="info">
@@ -294,12 +290,12 @@
                                                             <div class="image">
                                                                 @if($transaction['seller']['image'] !='')
                                                                     <img
-                                                                        src="{{asset('assets/uploads/user_images/'.$transaction['seller']['image'])}}"
-                                                                        alt="">
+                                                                            src="{{asset('assets/uploads/user_images/'.$transaction['seller']['image'])}}"
+                                                                            alt="">
                                                                 @else
                                                                     <img
-                                                                        src="{{asset('assets/uploads/user_images/user_avatar.png')}}"
-                                                                        alt="">
+                                                                            src="{{asset('assets/uploads/user_images/user_avatar.png')}}"
+                                                                            alt="">
                                                                 @endif
 
                                                             </div>

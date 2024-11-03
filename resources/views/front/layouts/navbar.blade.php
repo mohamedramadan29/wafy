@@ -20,10 +20,13 @@
                                         الرئيسية </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#"> الاسئلة الشائعة </a>
+                                    <a class="nav-link" href="#about_us">  من نحن   </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" id="western_link" href="#"> تواصل معنا </a>
+                                    <a class="nav-link" href="#faq"> الاسئلة الشائعة </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="western_link" href="https://wa.me/+966563398184" target="_blank"> تحدث معنا  </a>
                                 </li>
                                 @if(auth()->check())
                                     <li class="nav-item">
@@ -106,9 +109,82 @@
                                 <img width="60px" src="{{asset('assets/website/uploads/logo.webp')}}" alt="">
                             </a>
                         </div>
-                        <div class="">
+                        <div class="d-flex align-items-center">
+                            @if(auth()->check())
+                                <li class="nav-item">
+                                    <div class="dropdown">
+                                        @php
+                                            $unreadNotificationsUsers = \Illuminate\Support\Facades\Auth::user()->unreadNotifications;
+                                        @endphp
+
+                                        @if ($unreadNotificationsUsers->count() > 0)
+                                            <span class="counter"> {{ $unreadNotificationsUsers->count() }} </span>
+                                        @endif
+                                        <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                           aria-expanded="false">
+                                            <i class="bi bi-bell-fill"></i>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            @forelse ($unreadNotificationsUsers as $notification)
+                                                @if ($notification['type'] == 'App\Notifications\NewBuyer')
+                                                    <li><a class="dropdown-item"
+                                                           href="{{ url('transaction/' . $notification['data']['seller_id'] . '-' . $notification['data']['transaction_slug']) }}">
+                                                            {{ $notification['data']['title'] }}
+                                                            : {{ $notification['data']['transaction_title'] }}
+                                                            <br>
+                                                            <span class="timer"> <i class="fa fa-clock"></i>
+                                                                {{ $notification->created_at->diffForHumans() }}
+                                                            </span>
+                                                        </a>
+                                                    </li>
+                                                    <hr>
+                                                @elseif($notification['type'] == 'App\Notifications\SelectCenter')
+                                                    <li><a class="dropdown-item"
+                                                           href="{{ url('user/transactions') }}">
+                                                            {{ $notification['data']['title'] }}
+                                                            : {{ $notification['data']['transaction_title'] }}
+                                                            <br>
+                                                            <span class="timer"> <i class="fa fa-clock"></i>
+                                                                {{ $notification->created_at->diffForHumans() }}
+                                                            </span>
+                                                        </a>
+                                                    </li>
+                                                    <hr>
+                                                @endif
+                                            @empty
+                                                <li><a class="dropdown-item"> لا يوجد لديك اشعارات في الوقت
+                                                        الحالي </a>
+                                                </li>
+                                                <hr>
+                                            @endforelse
+                                        </ul>
+                                    </div>
+                                </li>
+                                <div class="dropdown navbar_user_image">
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        @if(auth()->user()->image !='')
+                                            <img src="{{asset('assets/uploads/user_images/'.auth()->user()->image)}}"
+                                                 alt="">
+                                        @else
+                                            <img src="{{asset('assets/uploads/user_images/user_avatar.png')}}" alt="">
+                                        @endif
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="{{url('user/transactions')}}">  جميع المعاملات  </a></li>
+                                        <li><a class="dropdown-item" href="{{url('user/add-transaction')}}"> بدء معاملة جديدة  </a></li>
+                                        <li><a class="dropdown-item" href="{{url('user/profile')}}"> بيانات حسابي  </a></li>
+                                        <li><a class="dropdown-item" href="{{url('user/change-password')}}"> تعديل رمز الحماية   </a></li>
+                                        <li><a class="dropdown-item" href="{{url('user/logout')}}">  تسجيل خروج  </a></li>
+                                    </ul>
+                                </div>
+                            @else
+                                <li class="nav-item">
+                                    <a class="nav-link mobile_login_button" id="western_link" href="{{url('register')}}"> تسجيل
+                                        دخول </a>
+                                </li>
+                            @endif
                             <span class="mobile_menu">
-                                <i style="color: #333;font-size: 18px;" class="bi bi-layout-text-sidebar"></i>
+                                <i style="color: #333;font-size: 31px; cursor: pointer;" class="bi bi-list"></i>
                             </span>
                         </div>
                     </div>
@@ -122,15 +198,29 @@
             <div class="new_links">
                 <ul>
                     <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="{{url('/')}}"> الرئيسية </a>
+                        <a class="nav-link" id='index_link' aria-current="page" href="{{url('/')}}">
+                            الرئيسية </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#"> الاسئلة الشائعة </a>
+                        <a class="nav-link" href="#about_us">  من نحن   </a>
                     </li>
-
                     <li class="nav-item">
-                        <a class="nav-link" href="#"> تواصل معنا </a>
+                        <a class="nav-link" href="#faq"> الاسئلة الشائعة </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="western_link" href="https://wa.me/+966563398184" target="_blank"> تحدث معنا  </a>
+                    </li>
+                    @if(\Illuminate\Support\Facades\Auth::check())
+                    <li class="nav-item">
+                        <a class="nav-link" id="western_link" href="{{url('user/dashboard')}}">
+                            حسابي </a>
+                    </li>
+                    @else
+                        <li class="nav-item">
+                            <a class="nav-link" id="western_link" href="{{url('register')}}"> تسجيل
+                                دخول </a>
+                        </li>
+                    @endif
 
                 </ul>
             </div>

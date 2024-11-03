@@ -183,7 +183,7 @@
                         </div>
                         <div class="col-lg-6 col-12">
                             <div class="info">
-                                <img src="{{asset('assets/website/uploads/seller.webp')}}" alt="">
+                                <img src="{{asset('assets/website/uploads/our_goals.svg')}}" alt="">
                             </div>
                         </div>
                     </div>

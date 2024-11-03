@@ -293,7 +293,7 @@
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-lg-12 col-12">
+                                                <div class="col-lg-3 col-6">
                                                     <div class="box">
                                                         <label for="front_image">صورة من الأمام <span
                                                                 class="star"> * </span></label>
@@ -310,7 +310,7 @@
                                                                onchange="previewImage(this, 'front_preview')">
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-12 col-12">
+                                                <div class="col-lg-3 col-6">
                                                     <div class="box">
                                                         <label for="back_image">صورة من الخلف <span class="star"> * </span></label>
                                                         <div class="image-upload-wrapper" onclick="document.getElementById('back_image').click();">
@@ -324,7 +324,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-lg-12 col-12">
+                                                <div class="col-lg-3 col-6">
                                                     <div class="box">
                                                         <label for="left_image">صورة من اليسار <span class="star"> * </span></label>
                                                         <div class="image-upload-wrapper" onclick="document.getElementById('left_image').click();">
@@ -338,7 +338,7 @@
                                                     </div>
                                                 </div>
 
-                                                <div class="col-lg-12 col-12">
+                                                <div class="col-lg-3 col-6">
                                                     <div class="box">
                                                         <label for="right_image">صورة من اليمين <span class="star"> * </span></label>
                                                         <div class="image-upload-wrapper" onclick="document.getElementById('right_image').click();">
